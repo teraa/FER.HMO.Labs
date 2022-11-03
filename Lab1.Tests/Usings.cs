@@ -1,5 +1,4 @@
 global using Common;
-global using FluentAssertions;
-global using FluentAssertions.Execution;
+global using Common.Tests;
 global using JetBrains.Annotations;
 global using Xunit;

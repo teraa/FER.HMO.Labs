@@ -9,6 +9,8 @@
   </PropertyGroup>
 
   <ItemGroup>
+    <PackageReference Include="FluentAssertions" Version="6.8.0" />
+    <PackageReference Include="JetBrains.Annotations" Version="2022.1.0" />
     <PackageReference Include="Microsoft.NET.Test.Sdk" Version="17.1.0" />
     <PackageReference Include="xunit" Version="2.4.1" />
     <PackageReference Include="xunit.runner.visualstudio" Version="2.4.3">
@@ -22,9 +24,7 @@
   </ItemGroup>
 
   <ItemGroup>
-    <ProjectReference Include="..\Common.Tests\Common.Tests.csproj" />
     <ProjectReference Include="..\Common\Common.csproj" />
-    <ProjectReference Include="..\Lab1\Lab1.csproj" />
   </ItemGroup>
 
 </Project>

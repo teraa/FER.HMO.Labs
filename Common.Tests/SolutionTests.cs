@@ -1,6 +1,6 @@
-namespace Lab1.Tests;
+namespace Common.Tests;
 
-public abstract class Tests
+public abstract class SolutionTests
 {
     protected Solution Solution { get; init; } = null!;
 

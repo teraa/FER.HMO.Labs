@@ -1,7 +1,7 @@
 ﻿namespace Lab1.Tests;
 
 [UsedImplicitly]
-public class GreedyInstance3Tests : Tests, IClassFixture<GreedyInstance3Tests.Fixture>
+public class GreedyInstance3Tests : SolutionTests, IClassFixture<GreedyInstance3Tests.Fixture>
 {
     public GreedyInstance3Tests(Fixture fixture)
         => Solution = fixture.Solution;
