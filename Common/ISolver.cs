@@ -2,5 +2,5 @@
 
 public interface ISolver
 {
-    Solution Solve(IEnumerable<Player> players);
+    Solution Solve();
 }

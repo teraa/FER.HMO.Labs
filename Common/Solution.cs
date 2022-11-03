@@ -2,6 +2,11 @@
 
 public class Solution
 {
-    public List<Player> Squad { get; } = new();
+    public Solution(IReadOnlyList<Player> squad)
+    {
+        Squad = squad;
+    }
+
+    public IReadOnlyList<Player> Squad { get; }
     public IEnumerable<Player> FirstTeam => Squad.Take(11);
 }

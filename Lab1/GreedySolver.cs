@@ -4,7 +4,14 @@ namespace Lab1;
 
 public class GreedySolver : ISolver
 {
-    public Solution Solve(IEnumerable<Player> players)
+    private readonly IReadOnlyList<Player> _instance;
+
+    public GreedySolver(IReadOnlyList<Player> instance)
+    {
+        _instance = instance;
+    }
+
+    public Solution Solve()
     {
         throw new NotImplementedException();
     }

@@ -13,9 +13,9 @@ public class GreedyInstance2Tests : Tests, IClassFixture<GreedyInstance2Tests.Fi
 
         public Fixture()
         {
-            var solver = new GreedySolver();
             var players = InstanceLoader.LoadFromFile(Instances.Instance2);
-            Solution = solver.Solve(players);
+            var solver = new GreedySolver(players);
+            Solution = solver.Solve();
         }
     }
 }
