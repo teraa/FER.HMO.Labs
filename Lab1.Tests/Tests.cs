@@ -15,6 +15,10 @@ public abstract class Tests
             .Should().HaveCount(11);
 
     [Fact]
+    public void Squad_UniquePlayers()
+        => Solution.Squad.Should().OnlyHaveUniqueItems(x => x.Id);
+
+    [Fact]
     public void FirstTeam_SubsetOf_Squad()
         => Solution.FirstTeam.Should().BeSubsetOf(Solution.Squad);
 
