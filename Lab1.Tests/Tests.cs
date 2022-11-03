@@ -16,7 +16,7 @@ public abstract class Tests
 
     [Fact]
     public void Squad_UniquePlayers()
-        => Solution.Squad.Should().OnlyHaveUniqueItems(x => x.Id);
+        => Solution.Squad.Should().OnlyHaveUniqueItems();
 
     [Fact]
     public void FirstTeam_SubsetOf_Squad()
@@ -33,29 +33,28 @@ public abstract class Tests
         using var scope = new AssertionScope();
         foreach (var clubPlayers in Solution.Squad.GroupBy(x => x.Club))
         {
-            scope.FailWith($"Squad has more than 3 players from club \"{clubPlayers.Key}\".");
             clubPlayers.Should().HaveCountLessThanOrEqualTo(3);
         }
     }
 
     [Fact]
     public void Squad_GK_Count()
-        => Solution.FirstTeam.Where(x => x.Position == Position.GK)
+        => Solution.Squad.Where(x => x.Position == Position.GK)
             .Should().HaveCount(2);
 
     [Fact]
     public void Squad_DEF_Count()
-        => Solution.FirstTeam.Where(x => x.Position == Position.DEF)
+        => Solution.Squad.Where(x => x.Position == Position.DEF)
             .Should().HaveCount(5);
 
     [Fact]
     public void Squad_MID_Count()
-        => Solution.FirstTeam.Where(x => x.Position == Position.MID)
+        => Solution.Squad.Where(x => x.Position == Position.MID)
             .Should().HaveCount(5);
 
     [Fact]
     public void Squad_FW_Count()
-        => Solution.FirstTeam.Where(x => x.Position == Position.FW)
+        => Solution.Squad.Where(x => x.Position == Position.FW)
             .Should().HaveCount(3);
 
     [Fact]
