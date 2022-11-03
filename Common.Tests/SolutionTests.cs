@@ -69,12 +69,6 @@ public abstract class SolutionTests
             .And.HaveCountLessThanOrEqualTo(5);
 
     [Fact]
-    public void FirstTeam_MID_Count()
-        => Solution.FirstTeam.Where(x => x.Position == Position.MID)
-            .Should().HaveCountGreaterThanOrEqualTo(2)
-            .And.HaveCountLessThanOrEqualTo(5);
-
-    [Fact]
     public void FirstTeam_FW_Count()
         => Solution.FirstTeam.Where(x => x.Position == Position.FW)
             .Should().HaveCountGreaterThanOrEqualTo(1)
