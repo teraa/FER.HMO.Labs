@@ -34,13 +34,13 @@ public class GreedySolver : ISolver
         _instance = instance;
     }
 
+    public Func<Player, double> OrderFunc { get; set; } = x => x.Points / Math.Log10((double) x.Price);
+
     public Solution Solve()
     {
         _state = new State();
 
-        // var players = _instance.OrderByDescending(x => Math.Sqrt(x.Points) / (double)x.Price);
-        // var players = _instance.OrderByDescending(x => x.Points / x.Price);
-        var players = _instance.OrderByDescending(x => x.Points / Math.Sqrt((double)x.Price));
+        var players = _instance.OrderByDescending(OrderFunc);
         foreach (var player in players)
         {
             if (_state.Squad.Count == 15)
