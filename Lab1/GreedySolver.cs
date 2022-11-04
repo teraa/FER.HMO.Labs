@@ -5,27 +5,6 @@ namespace Lab1;
 
 public class GreedySolver : ISolver
 {
-    private static readonly IReadOnlyList<Formation> s_validFormations;
-    private static readonly Formation s_squadFormation = new(2, 5, 5, 3);
-
-    static GreedySolver()
-    {
-        var formations = new List<Formation>();
-
-        int gk = 1;
-        for (int def = 3; def <= 5; def++)
-        for (int mid = 0; mid <= 5; mid++)
-        for (int fw = 1; fw <= 3; fw++)
-        {
-            if (gk + def + mid + fw != 11)
-                continue;
-
-            formations.Add(new Formation(new[] {gk, def, mid, fw}));
-        }
-
-        s_validFormations = formations;
-    }
-
     private readonly IReadOnlyList<Player> _instance;
     private State _state = null!;
 
@@ -79,7 +58,7 @@ public class GreedySolver : ISolver
 
         var formation = Formation.FromPlayers(players);
 
-        return formation.Values.Zip(s_squadFormation.Values, (x, y) => x <= y).All(x => x);
+        return formation.Values.Zip(Formation.SquadFormation.Values, (x, y) => x <= y).All(x => x);
     }
 
     private bool CanPickForFirstTeam(Player player)
@@ -87,7 +66,7 @@ public class GreedySolver : ISolver
         var players = _state.FirstTeam.Concat(new[] {player});
         var formation = Formation.FromPlayers(players);
 
-        return s_validFormations.Any(validFormation =>
+        return Formation.ValidFormations.Any(validFormation =>
             formation.Values.Zip(validFormation.Values, (x, y) => x <= y).All(x => x));
     }
 
