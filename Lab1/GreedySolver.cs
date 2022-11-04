@@ -43,26 +43,20 @@ public class GreedySolver : ISolver
         var players = _instance.OrderByDescending(x => x.Points / Math.Sqrt((double)x.Price));
         foreach (var player in players)
         {
-            if (CanPickForSquad(player) && CanPickForFirstTeam(player))
-            {
-                _state.FirstTeam.Add(player);
-                _state.Squad.Add(player);
-            }
-
-            if (_state.Squad.Count == 11)
-                break;
-        }
-
-        var cheapPlayers = _instance.OrderBy(x => x.Price);
-        foreach (var player in cheapPlayers)
-        {
-            if (CanPickForSquad(player))
-            {
-                _state.Squad.Add(player);
-            }
-
             if (_state.Squad.Count == 15)
                 break;
+
+            if (CanPickForSquad(player))
+                _state.Squad.Add(player);
+        }
+
+        foreach (var player in _state.Squad)
+        {
+            if (_state.FirstTeam.Count == 11)
+                break;
+
+            if (CanPickForFirstTeam(player))
+                _state.FirstTeam.Add(player);
         }
 
         var solution = new Solution(_state.Squad, _state.FirstTeam);
