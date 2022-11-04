@@ -1,4 +1,5 @@
-﻿using Common;
+﻿using System.Diagnostics;
+using Common;
 
 namespace Lab1;
 
@@ -37,26 +38,36 @@ public class GreedySolver : ISolver
     {
         _state = new State();
 
-        var players = _instance.OrderByDescending(x => x.Points / x.Price);
+        // var players = _instance.OrderByDescending(x => Math.Sqrt(x.Points) / (double)x.Price);
+        // var players = _instance.OrderByDescending(x => x.Points / x.Price);
+        var players = _instance.OrderByDescending(x => x.Points / Math.Sqrt((double)x.Price));
         foreach (var player in players)
         {
-            if (_state.Squad.Count == 15)
-                break;
-
-            if (CanPickForSquad(player))
+            if (CanPickForSquad(player) && CanPickForFirstTeam(player))
+            {
+                _state.FirstTeam.Add(player);
                 _state.Squad.Add(player);
+            }
+
+            if (_state.Squad.Count == 11)
+                break;
         }
 
-        foreach (var player in _state.Squad)
+        var cheapPlayers = _instance.OrderBy(x => x.Price);
+        foreach (var player in cheapPlayers)
         {
-            if (_state.FirstTeam.Count == 11)
-                break;
+            if (CanPickForSquad(player))
+            {
+                _state.Squad.Add(player);
+            }
 
-            if (CanPickForFirstTeam(player))
-                _state.FirstTeam.Add(player);
+            if (_state.Squad.Count == 15)
+                break;
         }
 
         var solution = new Solution(_state.Squad, _state.FirstTeam);
+
+        Debug.Assert(solution is {Squad.Count: 15, FirstTeam.Count: 11});
         return solution;
     }
 
@@ -64,6 +75,9 @@ public class GreedySolver : ISolver
     {
         var players = _state.Squad.Concat(new[] {player}).ToList();
         if (players.Sum(x => x.Price) > 100m)
+            return false;
+
+        if (players.Average(x => x.Price) * 15 > 100m)
             return false;
 
         if (players.Count(x => x.Club == player.Club) > 3)
