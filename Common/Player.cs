@@ -11,8 +11,8 @@ public record Player(
 
 public enum Position
 {
-    GK,
-    DEF,
-    MID,
-    FW
+    GK = 0,
+    DEF = 1,
+    MID = 2,
+    FW = 3,
 }
