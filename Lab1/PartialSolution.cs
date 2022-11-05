@@ -10,8 +10,9 @@ internal class PartialSolution
     public bool CanAddToSquad(Player player)
     {
         var squad = Squad.Concat(new[] {player}).ToList();
-        if (squad.Sum(x => x.Price) > 100m)
-            return false;
+
+        // if (squad.Sum(x => x.Price) > 100m)
+        //     return false;
 
         if (squad.Average(x => x.Price) * 15 > 100m)
             return false;
