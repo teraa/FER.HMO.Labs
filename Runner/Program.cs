@@ -20,9 +20,10 @@ foreach (var func in new Func<Player, double>[]
              })
     {
         var instance = InstanceLoader.LoadFromFile(fileName);
-        var solver = new GreedySolver(instance)
+        var solver = new GraspSolver(instance)
         {
             PlayerValue = func,
+            Alpha = 0,
         };
         var solution = solver.Solve();
         solutions.Add(solution);
