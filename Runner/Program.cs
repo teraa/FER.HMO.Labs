@@ -22,7 +22,7 @@ foreach (var func in new Func<Player, double>[]
         var instance = InstanceLoader.LoadFromFile(fileName);
         var solver = new GreedySolver(instance)
         {
-            OrderFunc = func
+            PlayerValue = func,
         };
         var solution = solver.Solve();
         solutions.Add(solution);

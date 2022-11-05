@@ -12,13 +12,13 @@ public class GreedySolver : ISolver
         _instance = instance;
     }
 
-    public Func<Player, double> OrderFunc { get; set; } = x => x.Points / Math.Log10((double) x.Price);
+    public Func<Player, double> PlayerValue { get; set; } = x => x.Points / Math.Log10((double) x.Price);
 
     public Solution Solve()
     {
         var solution = new PartialSolution();
 
-        var players = _instance.OrderByDescending(OrderFunc);
+        var players = _instance.OrderByDescending(PlayerValue);
         foreach (var player in players)
         {
             if (solution.Squad.Count == 15)
