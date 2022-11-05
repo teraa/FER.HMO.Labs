@@ -58,7 +58,7 @@ public class GreedySolver : ISolver
 
         var formation = Formation.FromPlayers(players);
 
-        return formation.Values.Zip(Formation.SquadFormation.Values, (x, y) => x <= y).All(x => x);
+        return formation.Values.Zip(Formation.SquadFormation.Values).All(x => x.First <= x.Second);
     }
 
     private bool CanPickForFirstTeam(Player player)
@@ -67,7 +67,7 @@ public class GreedySolver : ISolver
         var formation = Formation.FromPlayers(players);
 
         return Formation.ValidFormations.Any(validFormation =>
-            formation.Values.Zip(validFormation.Values, (x, y) => x <= y).All(x => x));
+            formation.Values.Zip(validFormation.Values).All(x => x.First <= x.Second));
     }
 
     private class State
