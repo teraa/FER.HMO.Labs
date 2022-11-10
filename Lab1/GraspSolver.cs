@@ -69,12 +69,7 @@ public class GraspSolver : ISolver
             solution.Squad.Add(player);
         }
 
-        return solution;
-    }
-
-    private void LocalSearch(PartialSolution solution)
-    {
-        // Pre - search
+        // Greedy pick the first team
         foreach (var player in solution.Squad)
         {
             if (solution.FirstTeam.Count == 11)
@@ -84,6 +79,11 @@ public class GraspSolver : ISolver
                 solution.FirstTeam.Add(player);
         }
 
+        return solution;
+    }
+
+    private void LocalSearch(PartialSolution solution)
+    {
         // Local search
     }
 }
