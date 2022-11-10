@@ -12,7 +12,7 @@ public class GreedySolver : ISolver
         _instance = instance;
     }
 
-    public Func<Player, double> PlayerValue { get; set; } = x => x.Points / Math.Log10((double) x.Price);
+    public Func<Player, double> PlayerValue { get; set; } = x => Math.Pow(x.Points, 2) / (double) x.Price;
 
     public Solution Solve()
     {
