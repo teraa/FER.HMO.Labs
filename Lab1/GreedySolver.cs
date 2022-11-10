@@ -38,6 +38,6 @@ public class GreedySolver : ISolver
         }
 
         Debug.Assert(solution is {Squad.Count: 15, FirstTeam.Count: 11});
-        return new Solution(solution.Squad, solution.FirstTeam);
+        return solution.ToSolution();
     }
 }

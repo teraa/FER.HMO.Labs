@@ -36,4 +36,7 @@ internal class PartialSolution
         return Formation.ValidFormations.Any(validFormation =>
             formation.Values.Zip(validFormation.Values).All(x => x.First <= x.Second));
     }
+
+    public Solution ToSolution()
+        => new Solution(Squad, FirstTeam);
 }

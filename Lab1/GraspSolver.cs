@@ -23,54 +23,67 @@ public class GraspSolver : ISolver
             .OrderByDescending(PlayerValue)
             .ToList();
 
-        var solutions = new PartialSolution[Iterations];
+        var solutions = new List<PartialSolution>();
 
-        for (int j = 0; j < solutions.Length; j++)
+        for (int k = 0; k < Iterations; k++)
         {
-            var solution = solutions[j] = new PartialSolution();
+            var solution = Construct(players);
 
-            // Construction phase
-            for (int i = 0; i < 15; i++)
-            {
-                // Use Skip() instead of Except() to emulate GreedySolver
-                // which will produce mostly same results except in cases where there are multiple players with same value
-                // one of which will be chosen randomly
-                var eligiblePlayers = players
-                    .Except(solution.Squad)
-                    // .Skip(i == 0 ? 0 : players.IndexOf(solution.Squad.Last()) + 1)
-                    .Where(x => solution.CanAddToSquad(x))
-                    .ToList();
-
-                double max = PlayerValue(eligiblePlayers[0]);
-                double min = PlayerValue(eligiblePlayers[^1]);
-                double threshold = max - Alpha * (max - min);
-
-                var rcl = eligiblePlayers
-                    .Where(x => PlayerValue(x) >= threshold)
-                    .ToList();
-
-                Debug.Assert(rcl.Count > 0);
-
-                var player = rcl[_random.Next(rcl.Count)];
-                solution.Squad.Add(player);
-            }
-
-            // Finalize construction
-            foreach (var player in solution.Squad)
-            {
-                if (solution.FirstTeam.Count == 11)
-                    break;
-
-                if (solution.CanAddToFirstTeam(player))
-                    solution.FirstTeam.Add(player);
-            }
-
-            // Local search
+            LocalSearch(solution);
 
             Debug.Assert(solution is {Squad.Count: 15, FirstTeam.Count: 11});
+
+            solutions.Add(solution);
         }
 
         var bestSolution = solutions.MaxBy(x => x.Value)!;
-        return new Solution(bestSolution.Squad, bestSolution.FirstTeam);
+        return bestSolution.ToSolution();
+    }
+
+    private PartialSolution Construct(IReadOnlyList<Player> players)
+    {
+        var solution = new PartialSolution();
+
+        for (int i = 0; i < 15; i++)
+        {
+            // Use Skip() instead of Except() to emulate GreedySolver
+            // which will produce mostly same results except in cases where there are multiple players with same value
+            // one of which will be chosen randomly
+            var eligiblePlayers = players
+                .Except(solution.Squad)
+                // .Skip(i == 0 ? 0 : players.IndexOf(solution.Squad.Last()) + 1)
+                .Where(x => solution.CanAddToSquad(x))
+                .ToList();
+
+            double max = PlayerValue(eligiblePlayers[0]);
+            double min = PlayerValue(eligiblePlayers[^1]);
+            double threshold = max - Alpha * (max - min);
+
+            var rcl = eligiblePlayers
+                .Where(x => PlayerValue(x) >= threshold)
+                .ToList();
+
+            Debug.Assert(rcl.Count > 0);
+
+            var player = rcl[_random.Next(rcl.Count)];
+            solution.Squad.Add(player);
+        }
+
+        return solution;
+    }
+
+    private void LocalSearch(PartialSolution solution)
+    {
+        // Pre - search
+        foreach (var player in solution.Squad)
+        {
+            if (solution.FirstTeam.Count == 11)
+                break;
+
+            if (solution.CanAddToFirstTeam(player))
+                solution.FirstTeam.Add(player);
+        }
+
+        // Local search
     }
 }
