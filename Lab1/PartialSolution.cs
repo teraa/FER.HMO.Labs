@@ -7,6 +7,9 @@ internal class PartialSolution
     public List<Player> Squad { get; } = new();
     public List<Player> FirstTeam { get; } = new();
 
+    public int Value => FirstTeam.Sum(x => x.Points);
+    public decimal Cost => Squad.Sum(x => x.Price);
+
     public bool CanAddToSquad(Player player)
     {
         var squad = Squad.Concat(new[] {player}).ToList();
