@@ -38,5 +38,14 @@ internal class PartialSolution
     }
 
     public Solution ToSolution()
-        => new Solution(Squad, FirstTeam);
+        => new(Squad, FirstTeam);
+
+    public PartialSolution Clone()
+    {
+        var clone = new PartialSolution();
+        clone.Squad.AddRange(Squad);
+        clone.FirstTeam.AddRange(FirstTeam);
+
+        return clone;
+    }
 }
