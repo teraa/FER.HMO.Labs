@@ -17,7 +17,7 @@ foreach (var func in new Func<Player, double>[]
         ? args[0]
         : Environment.CurrentDirectory;
 
-    var files = Directory.GetFiles(dir, "*.csv");
+    var files = Directory.GetFiles(dir, "2022*.csv");
 
     if (files.Length == 0)
     {
@@ -25,28 +25,52 @@ foreach (var func in new Func<Player, double>[]
         return;
     }
 
+    var instances = new List<(string name, IReadOnlyList<Player> instance)>();
+
     foreach (var file in files)
     {
-        var fileName = Path.GetFileName(file);
-
+        var name = Path.GetFileName(file);
         var instance = InstanceLoader.LoadFromFile(file);
-        var solver = new GraspSolver(instance)
-        // var solver = new GreedySolver(instance)
+        instances.Add((name, instance));
+    }
+
+    var solvers = new Func<IReadOnlyList<Player>, ISolver>[]
+    {
+        x => new GreedySolver(x)
+        {
+            PlayerValue = func,
+        },
+        x => new GraspSolver(x)
         {
             PlayerValue = func,
             Alpha = 0.2,
-        };
-        var solution = solver.Solve();
-        solutions.Add(solution);
-        var message =
-            $"Instance: {fileName}\n" +
-            $"Squad: {string.Join(',', solution.Squad.Select(x => x.Id))}\n" +
-            $"First team: {string.Join(',', solution.FirstTeam.Select(x => x.Id))}\n" +
-            $"Squad cost: {solution.Squad.Sum(x => x.Price)}\n" +
-            $"First team points: {solution.FirstTeam.Sum(x => x.Points)}\n";
-        // Console.WriteLine(message);
+        }
+    };
+
+    foreach (var solverFunc in solvers)
+    {
+        foreach (var (name, instance) in instances)
+        {
+            var solver = solverFunc(instance);
+            var solution = solver.Solve();
+            solutions.Add(solution);
+
+            var squad = solution.Squad.Select(x => x.Id);
+            var firstTeam = solution.FirstTeam.Select(x => x.Id);
+            var substitutions = solution.Squad.Except(solution.FirstTeam).Select(x => x.Id);
+            var points = solution.FirstTeam.Sum(x => x.Points);
+            var cost = solution.Squad.Sum(x => x.Price);
+
+            var message =
+                $"{solver.GetType().Name}, {name} " +
+                // $"{fileName}\n" +
+                // $"Squad: {string.Join(',', squad)}\n" +
+                $"{string.Join(',', firstTeam)} + {string.Join(',', substitutions)} " +
+                $"| p = {points}, c = {cost}";
+            Console.WriteLine(message);
+        }
     }
 
-    var averagePoints = solutions.Select(static x => x.FirstTeam.Sum(static x => x.Points)).Average();
-    Console.WriteLine($"Func: {++i}, Average: {averagePoints}");
+    // var averagePoints = solutions.Select(static x => x.FirstTeam.Sum(static x => x.Points)).Average();
+    // Console.WriteLine($"Func: {++i}, Average: {averagePoints}");
 }
