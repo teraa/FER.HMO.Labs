@@ -1,4 +1,5 @@
 using Common;
+using Lab1.Solvers;
 
 namespace Lab2.Solvers;
 
@@ -11,9 +12,12 @@ public class TabuSolver : ISolver
         _instance = instance;
     }
 
+    public Func<IReadOnlyList<Player>, Solution> InitialSolutionProvider { get; set; }
+        = instance => new GreedySolver(instance).Solve();
+
     public Solution Solve()
     {
-        var solver = new RandomSolver(_instance);
-        return solver.Solve();
+        var solution = InitialSolutionProvider(_instance);
+        return solution;
     }
 }

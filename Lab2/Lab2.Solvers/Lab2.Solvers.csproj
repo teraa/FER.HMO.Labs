@@ -8,6 +8,7 @@
 
   <ItemGroup>
     <ProjectReference Include="..\..\Common\Common.csproj" />
+    <ProjectReference Include="..\..\Lab1\Lab1.Solvers\Lab1.Solvers.csproj" />
   </ItemGroup>
 
 </Project>
