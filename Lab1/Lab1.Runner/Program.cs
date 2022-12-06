@@ -1,7 +1,7 @@
 using Common;
 using Lab1.Solvers;
 
-int i = 0;
+// int i = 0;
 foreach (var func in new Func<Player, double>[]
          {
              // x => x.Points,

@@ -1,7 +1,7 @@
 using Common;
 using Lab1.Solvers;
 
-int i = 0;
+// int i = 0;
 var solutions = new List<Solution>();
 
 string dir = args is {Length: 1}
