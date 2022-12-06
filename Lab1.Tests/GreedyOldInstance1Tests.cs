@@ -1,4 +1,4 @@
-﻿namespace Lab1.Tests;
+namespace Lab1.Tests;
 
 [UsedImplicitly]
 public class GreedyOldInstance1Tests : SolutionTests, IClassFixture<GreedyOldInstance1Tests.Fixture>

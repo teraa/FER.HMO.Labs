@@ -1,4 +1,4 @@
-﻿namespace Lab1.Tests;
+namespace Lab1.Tests;
 
 [UsedImplicitly]
 public class GraspInstance1Tests : SolutionTests, IClassFixture<GraspInstance1Tests.Fixture>

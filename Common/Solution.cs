@@ -1,4 +1,4 @@
-﻿namespace Common;
+namespace Common;
 
 public record Solution(
     IReadOnlyList<Player> Squad,

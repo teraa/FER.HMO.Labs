@@ -1,4 +1,4 @@
-﻿namespace Common.Tests;
+namespace Common.Tests;
 
 public class PlayerParserTests
 {
