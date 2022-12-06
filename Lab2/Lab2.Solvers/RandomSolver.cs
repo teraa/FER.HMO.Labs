@@ -15,7 +15,7 @@ public class RandomSolver : ISolver
     {
         while (true)
         {
-            var solution = new PartialSolution();
+            var solution = new SolutionBuilder();
 
             foreach (var player in _instance.OrderBy(_ => Random.Shared.NextDouble()))
             {

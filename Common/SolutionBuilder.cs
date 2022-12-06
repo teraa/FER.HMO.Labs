@@ -1,6 +1,6 @@
 namespace Common;
 
-public class PartialSolution
+public class SolutionBuilder
 {
     public List<Player> Squad { get; } = new();
     public List<Player> FirstTeam { get; } = new();
@@ -46,9 +46,9 @@ public class PartialSolution
     public Solution ToSolution()
         => new(Squad, FirstTeam);
 
-    public PartialSolution Clone()
+    public SolutionBuilder Clone()
     {
-        var clone = new PartialSolution();
+        var clone = new SolutionBuilder();
         clone.Squad.AddRange(Squad);
         clone.FirstTeam.AddRange(FirstTeam);
 

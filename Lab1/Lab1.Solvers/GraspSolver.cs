@@ -24,7 +24,7 @@ public class GraspSolver : ISolver
             .OrderByDescending(PlayerValue)
             .ToList();
 
-        var solutions = new List<PartialSolution>();
+        var solutions = new List<SolutionBuilder>();
         var maxLsCount = 0;
 
         for (int k = 0; k < Iterations; k++)
@@ -48,9 +48,9 @@ public class GraspSolver : ISolver
         return bestSolution.ToSolution();
     }
 
-    private PartialSolution Construct(IReadOnlyList<Player> players)
+    private SolutionBuilder Construct(IReadOnlyList<Player> players)
     {
-        var solution = new PartialSolution();
+        var solution = new SolutionBuilder();
 
         for (int i = 0; i < 15; i++)
         {
@@ -108,7 +108,7 @@ public class GraspSolver : ISolver
         return solution;
     }
 
-    private PartialSolution LocalSearch(PartialSolution previousSolution, IReadOnlyList<Player> players)
+    private SolutionBuilder LocalSearch(SolutionBuilder previousSolution, IReadOnlyList<Player> players)
     {
         _lsCount++;
 

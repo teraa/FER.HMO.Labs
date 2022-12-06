@@ -16,7 +16,7 @@ public class GreedySolver : ISolver
 
     public Solution Solve()
     {
-        var solution = new PartialSolution();
+        var solution = new SolutionBuilder();
 
         var players = _instance.OrderByDescending(PlayerValue);
         foreach (var player in players)
