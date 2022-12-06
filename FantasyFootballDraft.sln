@@ -11,9 +11,9 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.Tests", "Lab1.Tests\La
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "Common.Tests\Common.Tests.csproj", "{57F1ACAB-3863-4459-AFE9-4250938E9418}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Runner", "Runner\Runner.csproj", "{7C09B14C-48A3-42C0-8751-216BA6427494}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.Runner", "Lab1.Runner\Lab1.Runner.csproj", "{7C09B14C-48A3-42C0-8751-216BA6427494}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "AlphaRunner", "AlphaRunner\AlphaRunner.csproj", "{A1BAB249-5EBC-452A-B8E8-89C45516EF5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.AlphaRunner", "Lab1.AlphaRunner\Lab1.AlphaRunner.csproj", "{A1BAB249-5EBC-452A-B8E8-89C45516EF5B}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
