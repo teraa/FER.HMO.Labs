@@ -1,8 +1,6 @@
-using Common;
+namespace Common;
 
-namespace Lab1.Solvers;
-
-internal class PartialSolution
+public class PartialSolution
 {
     public List<Player> Squad { get; } = new();
     public List<Player> FirstTeam { get; } = new();
@@ -11,14 +9,22 @@ internal class PartialSolution
     public decimal Cost => Squad.Sum(x => x.Price);
 
     public bool CanAddToSquad(Player player)
+        => CanAddToSquad(player, true);
+
+    public bool CanAddToSquad(Player player, bool averagePriceCheck)
     {
         var squad = Squad.Concat(new[] {player}).ToList();
 
-        // if (squad.Sum(x => x.Price) > 100m)
-        //     return false;
-
-        if (squad.Average(x => x.Price) * 15 > 100m)
-            return false;
+        if (averagePriceCheck)
+        {
+            if (squad.Average(x => x.Price) * 15 > 100m)
+                return false;
+        }
+        else
+        {
+            if (squad.Sum(x => x.Price) > 100m)
+                return false;
+        }
 
         if (squad.Count(x => x.Club == player.Club) > 3)
             return false;

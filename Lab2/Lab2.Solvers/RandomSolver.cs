@@ -19,7 +19,7 @@ public class RandomSolver : ISolver
 
             foreach (var player in _instance.OrderBy(_ => Random.Shared.NextDouble()))
             {
-                if (solution.CanAddToSquad(player))
+                if (solution.CanAddToSquad(player, false))
                 {
                     solution.Squad.Add(player);
 
