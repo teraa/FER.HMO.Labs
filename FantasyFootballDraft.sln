@@ -5,15 +5,15 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{BB781D39-03B5-4D9E-A207-A8C2326547B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1", "Lab1\Lab1.csproj", "{00504643-5EF9-414D-A552-CE2C44FF0222}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1", "Lab1\Lab1\Lab1.csproj", "{00504643-5EF9-414D-A552-CE2C44FF0222}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.Tests", "Lab1.Tests\Lab1.Tests.csproj", "{1323ACCB-E552-4316-A953-7BFA37EB368E}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.Tests", "Lab1\Lab1.Tests\Lab1.Tests.csproj", "{1323ACCB-E552-4316-A953-7BFA37EB368E}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common.Tests", "Common.Tests\Common.Tests.csproj", "{57F1ACAB-3863-4459-AFE9-4250938E9418}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.Runner", "Lab1.Runner\Lab1.Runner.csproj", "{7C09B14C-48A3-42C0-8751-216BA6427494}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.Runner", "Lab1\Lab1.Runner\Lab1.Runner.csproj", "{7C09B14C-48A3-42C0-8751-216BA6427494}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.AlphaRunner", "Lab1.AlphaRunner\Lab1.AlphaRunner.csproj", "{A1BAB249-5EBC-452A-B8E8-89C45516EF5B}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.AlphaRunner", "Lab1\Lab1.AlphaRunner\Lab1.AlphaRunner.csproj", "{A1BAB249-5EBC-452A-B8E8-89C45516EF5B}"
 EndProject
 Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Lab1", "Lab1", "{97E5A865-53EC-4E08-BB1A-AF32B3F98BBF}"
 EndProject
