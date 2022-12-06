@@ -1,6 +1,6 @@
 using Common;
 
-namespace Lab1;
+namespace Lab1.Solvers;
 
 internal class PartialSolution
 {

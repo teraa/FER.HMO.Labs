@@ -1,5 +1,5 @@
 using Common;
-using Lab1;
+using Lab1.Solvers;
 
 int i = 0;
 var solutions = new List<Solution>();

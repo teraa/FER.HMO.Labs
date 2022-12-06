@@ -1,7 +1,7 @@
 using System.Diagnostics;
 using Common;
 
-namespace Lab1;
+namespace Lab1.Solvers;
 
 public class GreedySolver : ISolver
 {

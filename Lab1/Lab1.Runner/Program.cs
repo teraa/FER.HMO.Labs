@@ -1,5 +1,5 @@
 using Common;
-using Lab1;
+using Lab1.Solvers;
 
 int i = 0;
 foreach (var func in new Func<Player, double>[]

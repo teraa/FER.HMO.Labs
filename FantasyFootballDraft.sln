@@ -5,7 +5,7 @@ VisualStudioVersion = 16.0.30114.105
 MinimumVisualStudioVersion = 10.0.40219.1
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Common", "Common\Common.csproj", "{BB781D39-03B5-4D9E-A207-A8C2326547B7}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1", "Lab1\Lab1\Lab1.csproj", "{00504643-5EF9-414D-A552-CE2C44FF0222}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.Solvers", "Lab1\Lab1.Solvers\Lab1.Solvers.csproj", "{00504643-5EF9-414D-A552-CE2C44FF0222}"
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Lab1.Tests", "Lab1\Lab1.Tests\Lab1.Tests.csproj", "{1323ACCB-E552-4316-A953-7BFA37EB368E}"
 EndProject
