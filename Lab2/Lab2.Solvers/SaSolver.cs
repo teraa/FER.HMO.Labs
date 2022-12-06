@@ -13,6 +13,7 @@ public class SaSolver : ISolver
 
     public Solution Solve()
     {
-        throw new NotImplementedException();
+        var solver = new RandomSolver(_instance);
+        return solver.Solve();
     }
 }
