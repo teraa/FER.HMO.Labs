@@ -1,8 +1,8 @@
 using Common;
 
-namespace Lab2;
+namespace Lab2.Solvers;
 
-public class TabuSolver : ISolver
+public class SaSolver : ISolver
 {
     public Solution Solve()
     {
