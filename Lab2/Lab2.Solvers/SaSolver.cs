@@ -22,12 +22,6 @@ public class SaSolver : ISolver
 
     public Func<double, double, double, double> ProbabilityFunction { get; set; } = DefaultProbability;
 
-    public Solution Solve()
-    {
-        var solution = InitialSolutionProvider(_instance);
-        return solution;
-    }
-
     public static Solution GreedySolution(IReadOnlyList<Player> instance)
         => new GreedySolver(instance).Solve();
 
@@ -66,5 +60,11 @@ public class SaSolver : ISolver
         var e = Math.Exp(exponent);
         var p = 1 / (1 + e);
         return p;
+    }
+
+    public Solution Solve()
+    {
+        var solution = InitialSolutionProvider(_instance);
+        return solution;
     }
 }
