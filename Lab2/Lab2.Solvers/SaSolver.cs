@@ -50,7 +50,7 @@ public class SaSolver : ISolver
     }
 
     /// <summary>
-    /// Accept improving neighbors also with a certain probability.
+    /// Accept with a certain probability.
     /// </summary>
     public static double AlternativeProbability(double temperature, double currentValue, double newValue)
     {
