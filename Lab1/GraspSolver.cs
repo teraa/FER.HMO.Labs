@@ -40,9 +40,9 @@ public class GraspSolver : ISolver
             solutions.Add(solution);
         }
 
-        #if DEBUG
-        Console.WriteLine($"{_instance.Count}, {maxLsCount}");
-        #endif
+        // #if DEBUG
+        // Console.WriteLine($"{_instance.Count}, {maxLsCount}");
+        // #endif
 
         var bestSolution = solutions.MaxBy(x => x.Value)!;
         return bestSolution.ToSolution();
