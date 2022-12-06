@@ -17,6 +17,10 @@ public class SaSolver : ISolver
     public Func<IReadOnlyList<Player>, Solution> InitialSolutionProvider { get; set; }
         = instance => new GreedySolver(instance).Solve();
 
+    public double InitialTemperature { get; set; } = 100;
+
+    public Func<double, int, double> DecrementFunction { get; set; } = (t, _) => t * 0.5;
+
     public Solution Solve()
     {
         var solution = InitialSolutionProvider(_instance);
