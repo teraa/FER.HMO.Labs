@@ -1,7 +1,9 @@
 using Common;
+using JetBrains.Annotations;
 
 namespace Lab2.Solvers;
 
+[PublicAPI]
 public class RandomSolver : ISolver
 {
     private readonly IReadOnlyList<Player> _instance;
