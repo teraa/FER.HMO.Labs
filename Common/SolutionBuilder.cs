@@ -44,7 +44,7 @@ public class SolutionBuilder
     }
 
     public Solution ToSolution()
-        => new(Squad, FirstTeam);
+        => new(Squad.ToList(), FirstTeam.ToList());
 
     public SolutionBuilder Clone()
     {
