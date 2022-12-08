@@ -5,20 +5,13 @@ namespace Lab1.Solvers;
 
 public class GreedySolver : ISolver
 {
-    private readonly IReadOnlyList<Player> _instance;
-
-    public GreedySolver(IReadOnlyList<Player> instance)
-    {
-        _instance = instance;
-    }
-
     public Func<Player, double> PlayerValue { get; set; } = x => Math.Pow(x.Points, 2) / (double) x.Price;
 
-    public Solution Solve()
+    public Solution Solve(IReadOnlyList<Player> instance)
     {
         var solution = new SolutionBuilder();
 
-        var players = _instance.OrderByDescending(PlayerValue);
+        var players = instance.OrderByDescending(PlayerValue);
         foreach (var player in players)
         {
             if (solution.Squad.Count == 15)

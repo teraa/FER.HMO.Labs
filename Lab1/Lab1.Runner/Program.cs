@@ -36,11 +36,11 @@ foreach (var func in new Func<Player, double>[]
 
     var solvers = new Func<IReadOnlyList<Player>, ISolver>[]
     {
-        x => new GreedySolver(x)
+        x => new GreedySolver()
         {
             PlayerValue = func,
         },
-        x => new GraspSolver(x)
+        x => new GraspSolver()
         {
             PlayerValue = func,
             Alpha = 0.2,
@@ -52,7 +52,7 @@ foreach (var func in new Func<Player, double>[]
         foreach (var (name, instance) in instances)
         {
             var solver = solverFunc(instance);
-            var solution = solver.Solve();
+            var solution = solver.Solve(instance);
             solutions.Add(solution);
 
             var squad = solution.Squad.Select(x => x.Id);

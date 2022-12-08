@@ -14,8 +14,8 @@ public class GraspInstance2Tests : SolutionTests, IClassFixture<GraspInstance2Te
         public Fixture()
         {
             var players = InstanceLoader.LoadFromFile(Instances.Instance2);
-            var solver = new GraspSolver(players);
-            Solution = solver.Solve();
+            var solver = new GraspSolver();
+            Solution = solver.Solve(players);
         }
     }
 }

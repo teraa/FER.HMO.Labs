@@ -2,5 +2,5 @@ namespace Common;
 
 public interface ISolver
 {
-    Solution Solve();
+    Solution Solve(IReadOnlyList<Player> instance);
 }

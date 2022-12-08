@@ -29,11 +29,11 @@ foreach (var (name, instance) in instances)
 {
     for (double a = 0; a < 1; a += 0.1)
     {
-        var solver = new GraspSolver(instance)
+        var solver = new GraspSolver()
         {
             Alpha = a,
         };
-        var solution = solver.Solve();
+        var solution = solver.Solve(instance);
         solutions.Add(solution);
 
         var squad = solution.Squad.Select(x => x.Id);

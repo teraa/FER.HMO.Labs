@@ -14,8 +14,8 @@ public class TabuInstance2Tests : SolutionTests, IClassFixture<TabuInstance2Test
         public Fixture()
         {
             var players = InstanceLoader.LoadFromFile(Instances.Instance2);
-            var solver = new TabuSolver(players);
-            Solution = solver.Solve();
+            var solver = new TabuSolver();
+            Solution = solver.Solve(players);
         }
     }
 }

@@ -14,8 +14,8 @@ public class GraspInstance3Tests : SolutionTests, IClassFixture<GraspInstance3Te
         public Fixture()
         {
             var players = InstanceLoader.LoadFromFile(Instances.Instance3);
-            var solver = new GraspSolver(players);
-            Solution = solver.Solve();
+            var solver = new GraspSolver();
+            Solution = solver.Solve(players);
         }
     }
 }

@@ -5,35 +5,26 @@ namespace Lab1.Solvers;
 
 public class GraspSolver : ISolver
 {
-    private readonly IReadOnlyList<Player> _instance;
-    private readonly Random _random = new();
-    private int _lsCount;
-
-    public GraspSolver(IReadOnlyList<Player> instance)
-    {
-        _instance = instance;
-    }
-
     public Func<Player, double> PlayerValue { get; set; } = x => Math.Pow(x.Points, 2) / (double) x.Price;
     public double Alpha { get; set; } = 0.2;
     public int Iterations { get; set; } = 10;
 
-    public Solution Solve()
+    public Solution Solve(IReadOnlyList<Player> instance)
     {
-        var players = _instance
+        var players = instance
             .OrderByDescending(PlayerValue)
             .ToList();
 
         var solutions = new List<SolutionBuilder>();
-        var maxLsCount = 0;
+        int maxLsIterations = 0;
 
         for (int k = 0; k < Iterations; k++)
         {
             var solution = Construct(players);
 
-            _lsCount = 0;
-            solution = LocalSearch(solution, players);
-            maxLsCount = Math.Max(_lsCount, maxLsCount);
+            int lsIterations = 0;
+            solution = LocalSearch(solution, players, ref lsIterations);
+            maxLsIterations = Math.Max(lsIterations, maxLsIterations);
 
             Debug.Assert(solution is {Squad.Count: 15, FirstTeam.Count: 11});
 
@@ -73,7 +64,7 @@ public class GraspSolver : ISolver
 
             Debug.Assert(rcl.Count > 0);
 
-            var player = rcl[_random.Next(rcl.Count)];
+            var player = rcl[Random.Shared.Next(rcl.Count)];
             solution.Squad.Add(player);
         }
 
@@ -108,9 +99,9 @@ public class GraspSolver : ISolver
         return solution;
     }
 
-    private SolutionBuilder LocalSearch(SolutionBuilder previousSolution, IReadOnlyList<Player> players)
+    private SolutionBuilder LocalSearch(SolutionBuilder previousSolution, IReadOnlyList<Player> players, ref int iteration)
     {
-        _lsCount++;
+        iteration++;
 
         var bestSolution = previousSolution;
 
@@ -134,7 +125,7 @@ public class GraspSolver : ISolver
 
             if (bestSolution.Value < solution.Value)
             {
-                solution = LocalSearch(solution, players);
+                solution = LocalSearch(solution, players, ref iteration);
                 bestSolution = solution;
             }
         }

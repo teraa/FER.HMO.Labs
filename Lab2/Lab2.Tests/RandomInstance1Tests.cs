@@ -14,8 +14,8 @@ public class RandomInstance1Tests : SolutionTests, IClassFixture<RandomInstance1
         public Fixture()
         {
             var players = InstanceLoader.LoadFromFile(Instances.Instance1);
-            var solver = new SaSolver(players);
-            Solution = solver.Solve();
+            var solver = new SaSolver();
+            Solution = solver.Solve(players);
         }
     }
 }
