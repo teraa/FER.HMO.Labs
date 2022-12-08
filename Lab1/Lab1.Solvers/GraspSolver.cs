@@ -26,7 +26,7 @@ public class GraspSolver : ISolver
             solution = LocalSearch(solution, players, ref lsIterations);
             maxLsIterations = Math.Max(lsIterations, maxLsIterations);
 
-            Debug.Assert(solution is {Squad.Count: 15, FirstTeam.Count: 11});
+            Debug.Assert(solution is {Squad.Count: Constants.SquadCount, FirstTeam.Count: Constants.FirstTeamCount});
 
             solutions.Add(solution);
         }
@@ -43,7 +43,7 @@ public class GraspSolver : ISolver
     {
         var solution = new SolutionBuilder();
 
-        for (int i = 0; i < 15; i++)
+        for (int i = 0; i < Constants.SquadCount; i++)
         {
             // Use Skip() instead of Except() to emulate GreedySolver
             // which will produce mostly same results except in cases where there are multiple players with same value
@@ -71,7 +71,7 @@ public class GraspSolver : ISolver
         // Greedy pick the first team
         foreach (var player in solution.Squad)
         {
-            if (solution.FirstTeam.Count == 11)
+            if (solution.FirstTeam.Count == Constants.FirstTeamCount)
                 break;
 
             if (solution.CanAddToFirstTeam(player))
@@ -80,7 +80,7 @@ public class GraspSolver : ISolver
 
         // Greedy reduce squad cost
         var substitutes = solution.Squad.Except(solution.FirstTeam).ToList();
-        Debug.Assert(substitutes is {Count: 4});
+        Debug.Assert(substitutes is {Count: Constants.SubstitutesCount});
         foreach (var substitute in substitutes)
         {
             solution.Squad.Remove(substitute);

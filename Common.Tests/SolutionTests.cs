@@ -7,12 +7,12 @@ public abstract class SolutionTests
     [Fact]
     public void Squad_PlayerCount()
         => Solution.Squad
-            .Should().HaveCount(15);
+            .Should().HaveCount(Constants.SquadCount);
 
     [Fact]
     public void FirstTeam_PlayerCount()
         => Solution.FirstTeam
-            .Should().HaveCount(11);
+            .Should().HaveCount(Constants.FirstTeamCount);
 
     [Fact]
     public void Squad_UniquePlayers()
@@ -25,7 +25,7 @@ public abstract class SolutionTests
     [Fact]
     public void Squad_Cost()
         => Solution.Squad.Sum(x => x.Price)
-            .Should().BeLessThanOrEqualTo(100m);
+            .Should().BeLessThanOrEqualTo(Constants.MaxSquadCost);
 
     [Fact]
     public void Squad_MaxPlayersPerClub()
@@ -33,45 +33,45 @@ public abstract class SolutionTests
         using var scope = new AssertionScope();
         foreach (var clubPlayers in Solution.Squad.GroupBy(x => x.Club))
         {
-            clubPlayers.Should().HaveCountLessThanOrEqualTo(3);
+            clubPlayers.Should().HaveCountLessThanOrEqualTo(Constants.MaxPlayersPerClub);
         }
     }
 
     [Fact]
     public void Squad_GK_Count()
         => Solution.Squad.Where(x => x.Position == Position.GK)
-            .Should().HaveCount(2);
+            .Should().HaveCount(Constants.SquadGkCount);
 
     [Fact]
     public void Squad_DEF_Count()
         => Solution.Squad.Where(x => x.Position == Position.DEF)
-            .Should().HaveCount(5);
+            .Should().HaveCount(Constants.SquadDefCount);
 
     [Fact]
     public void Squad_MID_Count()
         => Solution.Squad.Where(x => x.Position == Position.MID)
-            .Should().HaveCount(5);
+            .Should().HaveCount(Constants.SquadMidCount);
 
     [Fact]
     public void Squad_FW_Count()
         => Solution.Squad.Where(x => x.Position == Position.FW)
-            .Should().HaveCount(3);
+            .Should().HaveCount(Constants.SquadFwCount);
 
     [Fact]
     public void FirstTeam_GK_Count()
         => Solution.FirstTeam.Where(x => x.Position == Position.GK)
-            .Should().HaveCount(1);
+            .Should().HaveCount(Constants.FirstTeamGkCount);
 
     [Fact]
     public void FirstTeam_DEF_Count()
         => Solution.FirstTeam.Where(x => x.Position == Position.DEF)
-            .Should().HaveCountGreaterThanOrEqualTo(3)
-            .And.HaveCountLessThanOrEqualTo(5);
+            .Should().HaveCountGreaterThanOrEqualTo(Constants.FirstTeamMinDefCount)
+            .And.HaveCountLessThanOrEqualTo(Constants.SquadDefCount);
 
     [Fact]
     public void FirstTeam_FW_Count()
         => Solution.FirstTeam.Where(x => x.Position == Position.FW)
-            .Should().HaveCountGreaterThanOrEqualTo(1)
-            .And.HaveCountLessThanOrEqualTo(3);
+            .Should().HaveCountGreaterThanOrEqualTo(Constants.FirstTeamMinFwCount)
+            .And.HaveCountLessThanOrEqualTo(Constants.SquadFwCount);
 
 }

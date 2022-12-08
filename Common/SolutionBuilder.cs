@@ -17,16 +17,16 @@ public class SolutionBuilder
 
         if (averagePriceCheck)
         {
-            if (squad.Average(x => x.Price) * 15 > 100m)
+            if (squad.Average(x => x.Price) * Constants.SquadCount > Constants.MaxSquadCost)
                 return false;
         }
         else
         {
-            if (squad.Sum(x => x.Price) > 100m)
+            if (squad.Sum(x => x.Price) > Constants.MaxSquadCost)
                 return false;
         }
 
-        if (squad.Count(x => x.Club == player.Club) > 3)
+        if (squad.Count(x => x.Club == player.Club) > Constants.MaxPlayersPerClub)
             return false;
 
         var formation = Formation.FromPlayers(squad);

@@ -8,12 +8,12 @@ public class Formation
     {
         var formations = new List<Formation>();
 
-        int gk = 1;
-        for (int def = 3; def <= 5; def++)
-        for (int mid = 0; mid <= 5; mid++)
-        for (int fw = 1; fw <= 3; fw++)
+        const int gk = Constants.FirstTeamGkCount;
+        for (int def = Constants.FirstTeamMinDefCount; def <= Constants.SquadDefCount; def++)
+        for (int mid = Constants.FirstTeamMinMidCount; mid <= Constants.SquadMidCount; mid++)
+        for (int fw = Constants.FirstTeamMinFwCount; fw <= Constants.SquadFwCount; fw++)
         {
-            if (gk + def + mid + fw != 11)
+            if (gk + def + mid + fw != Constants.FirstTeamCount)
                 continue;
 
             formations.Add(new Formation(new[] {gk, def, mid, fw}));
@@ -31,13 +31,19 @@ public class Formation
 
         _formation = formation;
     }
+
     public Formation(int gk, int def, int mid, int fw)
     {
         _formation = new[] {gk, def, mid, fw};
     }
 
     public static IReadOnlyList<Formation> ValidFormations { get; }
-    public static Formation SquadFormation { get; } = new(2, 5, 5, 3);
+
+    public static Formation SquadFormation { get; } = new(
+        gk: Constants.SquadGkCount,
+        def: Constants.SquadDefCount,
+        mid: Constants.SquadMidCount,
+        fw: Constants.SquadFwCount);
 
     public int this[Position position]
     {

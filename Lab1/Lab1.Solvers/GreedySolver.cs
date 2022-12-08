@@ -14,7 +14,7 @@ public class GreedySolver : ISolver
         var players = instance.OrderByDescending(PlayerValue);
         foreach (var player in players)
         {
-            if (solution.Squad.Count == 15)
+            if (solution.Squad.Count == Constants.SquadCount)
                 break;
 
             if (solution.CanAddToSquad(player))
@@ -23,14 +23,14 @@ public class GreedySolver : ISolver
 
         foreach (var player in solution.Squad)
         {
-            if (solution.FirstTeam.Count == 11)
+            if (solution.FirstTeam.Count == Constants.FirstTeamCount)
                 break;
 
             if (solution.CanAddToFirstTeam(player))
                 solution.FirstTeam.Add(player);
         }
 
-        Debug.Assert(solution is {Squad.Count: 15, FirstTeam.Count: 11});
+        Debug.Assert(solution is {Squad.Count: Constants.SquadCount, FirstTeam.Count: Constants.FirstTeamCount});
         return solution.ToSolution();
     }
 }

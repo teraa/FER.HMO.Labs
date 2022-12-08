@@ -18,15 +18,15 @@ public class RandomSolver : ISolver
                 {
                     solution.Squad.Add(player);
 
-                    if (solution.FirstTeam.Count < 11 && solution.CanAddToFirstTeam(player))
+                    if (solution.FirstTeam.Count < Constants.FirstTeamCount && solution.CanAddToFirstTeam(player))
                     {
                         solution.FirstTeam.Add(player);
                     }
                 }
 
-                if (solution.Squad.Count == 15)
+                if (solution.Squad.Count == Constants.SquadCount)
                 {
-                    if (solution.FirstTeam.Count == 11)
+                    if (solution.FirstTeam.Count == Constants.FirstTeamCount)
                     {
                         return solution.ToSolution();
                     }
