@@ -24,15 +24,15 @@ public class RandomSolver : ISolver
                     }
                 }
 
-                if (solution.Squad.Count == Constants.SquadCount)
-                {
-                    if (solution.FirstTeam.Count == Constants.FirstTeamCount)
-                    {
-                        return solution.ToSolution();
-                    }
+                // Incomplete solution
+                if (solution.Squad.Count != Constants.SquadCount)
+                    continue;
 
+                // Invalid solution
+                if (solution.FirstTeam.Count != Constants.FirstTeamCount)
                     break;
-                }
+
+                return solution.ToSolution();
             }
         }
     }
