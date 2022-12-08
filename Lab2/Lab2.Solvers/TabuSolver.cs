@@ -11,7 +11,7 @@ public class TabuSolver : ISolver
 
     public Solution Solve(IReadOnlyList<Player> instance)
     {
-        var solution = InitialSolver.Solve(instance);
-        return solution;
+        var incumbent = InitialSolver.Solve(instance);
+        return incumbent;
     }
 }
