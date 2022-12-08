@@ -2,8 +2,20 @@ namespace Common;
 
 public class SolutionBuilder
 {
-    public List<Player> Squad { get; } = new();
-    public List<Player> FirstTeam { get; } = new();
+    public SolutionBuilder()
+    {
+        Squad = new();
+        FirstTeam = new();
+    }
+
+    public SolutionBuilder(Solution solution)
+    {
+        Squad = solution.Squad.ToList();
+        FirstTeam = solution.FirstTeam.ToList();
+    }
+
+    public List<Player> Squad { get; }
+    public List<Player> FirstTeam { get; }
 
     public int Value => FirstTeam.Sum(x => x.Points);
     public decimal Cost => Squad.Sum(x => x.Price);

@@ -16,16 +16,16 @@ public class GraspSolver : ISolver
             .OrderByDescending(PlayerValue)
             .ToList();
 
-        var solutions = new List<SolutionBuilder>();
+        var solutions = new List<Solution>();
         int maxLsIterations = 0;
 
         for (int k = 0; k < Iterations; k++)
         {
             var solution = Construct(players);
+            solution = LocalSearch(solution, instance, out var lsIterations);
 
-            int lsIterations = 0;
-            solution = LocalSearch(solution, players, ref lsIterations);
-            maxLsIterations = Math.Max(lsIterations, maxLsIterations);
+            if (maxLsIterations < lsIterations)
+                maxLsIterations = lsIterations;
 
             Debug.Assert(solution is {Squad.Count: Constants.SquadCount, FirstTeam.Count: Constants.FirstTeamCount});
 
@@ -37,10 +37,10 @@ public class GraspSolver : ISolver
         // #endif
 
         var bestSolution = solutions.MaxBy(x => x.Value)!;
-        return bestSolution.ToSolution();
+        return bestSolution;
     }
 
-    private SolutionBuilder Construct(IReadOnlyList<Player> players)
+    private Solution Construct(IReadOnlyList<Player> players)
     {
         var solution = new SolutionBuilder();
 
@@ -97,10 +97,16 @@ public class GraspSolver : ISolver
             solution.Squad.Add(newSubstitute);
         }
 
-        return solution;
+        return solution.ToSolution();
     }
 
-    private SolutionBuilder LocalSearch(SolutionBuilder previous, IReadOnlyList<Player> players, ref int iterations)
+    private Solution LocalSearch(Solution incumbent, Instance instance, out int iterations)
+    {
+        iterations = 0;
+        return LocalSearchInternal(new SolutionBuilder(incumbent), instance, ref iterations).ToSolution();
+    }
+
+    private SolutionBuilder LocalSearchInternal(SolutionBuilder previous, Instance instance, ref int iterations)
     {
         iterations++;
 
@@ -112,7 +118,7 @@ public class GraspSolver : ISolver
             current.FirstTeam.Remove(player);
             current.Squad.Remove(player);
 
-            var newPlayer = players
+            var newPlayer = instance.Players
                 .Except(current.Squad)
                 .Where(current.CanAddToSquad)
                 .Where(current.CanAddToFirstTeam)
@@ -126,7 +132,7 @@ public class GraspSolver : ISolver
 
             if (incumbent.Value < current.Value)
             {
-                current = LocalSearch(current, players, ref iterations);
+                current = LocalSearchInternal(current, instance, ref iterations);
                 incumbent = current;
             }
         }
