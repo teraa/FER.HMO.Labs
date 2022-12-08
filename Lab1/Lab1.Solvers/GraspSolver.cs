@@ -99,37 +99,37 @@ public class GraspSolver : ISolver
         return solution;
     }
 
-    private SolutionBuilder LocalSearch(SolutionBuilder previousSolution, IReadOnlyList<Player> players, ref int iteration)
+    private SolutionBuilder LocalSearch(SolutionBuilder previous, IReadOnlyList<Player> players, ref int iterations)
     {
-        iteration++;
+        iterations++;
 
-        var bestSolution = previousSolution;
+        var incumbent = previous;
 
-        foreach (var player in previousSolution.FirstTeam)
+        foreach (var player in previous.FirstTeam)
         {
-            var solution = previousSolution.Clone();
-            solution.FirstTeam.Remove(player);
-            solution.Squad.Remove(player);
+            var current = previous.Clone();
+            current.FirstTeam.Remove(player);
+            current.Squad.Remove(player);
 
             var newPlayer = players
-                .Except(solution.Squad)
-                .Where(solution.CanAddToSquad)
-                .Where(solution.CanAddToFirstTeam)
+                .Except(current.Squad)
+                .Where(current.CanAddToSquad)
+                .Where(current.CanAddToFirstTeam)
                 .FirstOrDefault(x => x.Points > player.Points);
 
             if (newPlayer is null)
                 continue;
 
-            solution.FirstTeam.Add(newPlayer);
-            solution.Squad.Add(newPlayer);
+            current.FirstTeam.Add(newPlayer);
+            current.Squad.Add(newPlayer);
 
-            if (bestSolution.Value < solution.Value)
+            if (incumbent.Value < current.Value)
             {
-                solution = LocalSearch(solution, players, ref iteration);
-                bestSolution = solution;
+                current = LocalSearch(current, players, ref iterations);
+                incumbent = current;
             }
         }
 
-        return bestSolution;
+        return incumbent;
     }
 }
