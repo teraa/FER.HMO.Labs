@@ -9,7 +9,7 @@ public class TabuSolver : ISolver
 {
     public ISolver InitialSolver { get; set; } = new GreedySolver();
 
-    public Solution Solve(IReadOnlyList<Player> instance)
+    public Solution Solve(Instance instance)
     {
         var incumbent = InitialSolver.Solve(instance);
         return incumbent;

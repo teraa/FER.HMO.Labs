@@ -16,7 +16,7 @@ if (files.Length == 0)
     return;
 }
 
-var instances = new List<(string name, IReadOnlyList<Player> instance)>();
+var instances = new List<(string name, Instance instance)>();
 
 foreach (var file in files)
 {

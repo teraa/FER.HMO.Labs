@@ -9,9 +9,10 @@ public class GraspSolver : ISolver
     public double Alpha { get; set; } = 0.2;
     public int Iterations { get; set; } = 10;
 
-    public Solution Solve(IReadOnlyList<Player> instance)
+    public Solution Solve(Instance instance)
     {
         var players = instance
+            .Players
             .OrderByDescending(PlayerValue)
             .ToList();
 

@@ -25,7 +25,7 @@ foreach (var func in new Func<Player, double>[]
         return;
     }
 
-    var instances = new List<(string name, IReadOnlyList<Player> instance)>();
+    var instances = new List<(string name, Instance instance)>();
 
     foreach (var file in files)
     {
@@ -34,7 +34,7 @@ foreach (var func in new Func<Player, double>[]
         instances.Add((name, instance));
     }
 
-    var solvers = new Func<IReadOnlyList<Player>, ISolver>[]
+    var solvers = new Func<Instance, ISolver>[]
     {
         x => new GreedySolver()
         {

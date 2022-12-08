@@ -7,11 +7,14 @@ public class GreedySolver : ISolver
 {
     public Func<Player, double> PlayerValue { get; set; } = x => Math.Pow(x.Points, 2) / (double) x.Price;
 
-    public Solution Solve(IReadOnlyList<Player> instance)
+    public Solution Solve(Instance instance)
     {
         var solution = new SolutionBuilder();
 
-        var players = instance.OrderByDescending(PlayerValue);
+        var players = instance
+            .Players
+            .OrderByDescending(PlayerValue);
+
         foreach (var player in players)
         {
             if (solution.Squad.Count == Constants.SquadCount)

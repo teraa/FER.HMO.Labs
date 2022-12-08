@@ -4,13 +4,13 @@ namespace Common;
 
 public static class InstanceLoader
 {
-    public static IReadOnlyList<Player> LoadFromFile(string fileName, Encoding? encoding = null)
+    public static Instance LoadFromFile(string fileName, Encoding? encoding = null)
     {
         using var stream = File.OpenRead(fileName);
         return LoadFromStream(stream, encoding);
     }
 
-    public static IReadOnlyList<Player> LoadFromStream(Stream stream, Encoding? encoding = null)
+    public static Instance LoadFromStream(Stream stream, Encoding? encoding = null)
     {
         using var reader = new StreamReader(stream, encoding ?? Encoding.UTF8);
 
@@ -21,7 +21,7 @@ public static class InstanceLoader
             players.Add(player);
         }
 
-        return players;
+        return new Instance(players);
     }
 }
 

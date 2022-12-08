@@ -6,13 +6,13 @@ namespace Lab2.Solvers;
 [PublicAPI]
 public class RandomSolver : ISolver
 {
-    public Solution Solve(IReadOnlyList<Player> instance)
+    public Solution Solve(Instance instance)
     {
         while (true)
         {
             var solution = new SolutionBuilder();
 
-            foreach (var player in instance.OrderBy(_ => Random.Shared.NextDouble()))
+            foreach (var player in instance.Players.OrderBy(_ => Random.Shared.NextDouble()))
             {
                 if (solution.CanAddToSquad(player, false))
                 {
