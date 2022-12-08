@@ -7,12 +7,11 @@ namespace Lab2.Solvers;
 [PublicAPI]
 public class TabuSolver : ISolver
 {
-    public Func<IReadOnlyList<Player>, Solution> InitialSolutionProvider { get; set; }
-        = instance => new GreedySolver().Solve(instance);
+    public ISolver InitialSolver { get; set; } = new GreedySolver();
 
     public Solution Solve(IReadOnlyList<Player> instance)
     {
-        var solution = InitialSolutionProvider(instance);
+        var solution = InitialSolver.Solve(instance);
         return solution;
     }
 }

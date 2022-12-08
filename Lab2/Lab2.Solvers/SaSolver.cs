@@ -7,19 +7,13 @@ namespace Lab2.Solvers;
 [PublicAPI]
 public class SaSolver : ISolver
 {
-    public Func<IReadOnlyList<Player>, Solution> InitialSolutionProvider { get; set; } = GreedySolution;
+    public ISolver InitialSolver { get; set; } = new GreedySolver();
 
     public double InitialTemperature { get; set; } = 100;
 
     public Func<double, int, double> DecrementFunction { get; set; } = DefaultDecrement;
 
     public Func<double, double, double, double> ProbabilityFunction { get; set; } = DefaultProbability;
-
-    public static Solution GreedySolution(IReadOnlyList<Player> instance)
-        => new GreedySolver().Solve(instance);
-
-    public static Solution RandomSolution(IReadOnlyList<Player> instance)
-        => new RandomSolver().Solve(instance);
 
     public static double DefaultDecrement(double temperature, int iteration)
         => temperature * 0.5;
@@ -57,7 +51,7 @@ public class SaSolver : ISolver
 
     public Solution Solve(IReadOnlyList<Player> instance)
     {
-        var solution = InitialSolutionProvider(instance);
+        var solution = InitialSolver.Solve(instance);
         return solution;
     }
 }
