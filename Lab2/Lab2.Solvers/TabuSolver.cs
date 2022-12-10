@@ -13,18 +13,14 @@ public class TabuSolver : ISolver
 
     public Solution Solve(Instance instance)
     {
-        var incumbent = InitialSolver.Solve(instance);
-        return TabuSearch(incumbent, instance, out var iterations);
-    }
-
-    private Solution TabuSearch(Solution initial, Instance instance, out int iteration)
-    {
-        int improvedAt = iteration = 0;
+        var initial = InitialSolver.Solve(instance);
+        int improvedAt = 0;
         var previous = new SolutionBuilder(initial);
         var incumbent = previous;
         var tabu = new TabuList<Player>(Tenure);
 
-        for (iteration = 0; iteration - improvedAt < TerminateAfter; iteration++)
+        int i;
+        for (i = 0; i - improvedAt < TerminateAfter; i++)
         {
             SolutionBuilder? bestInIteration = null;
 
@@ -70,12 +66,12 @@ public class TabuSolver : ISolver
                 if (incumbent.Value < bestInIteration.Value)
                 {
                     incumbent = bestInIteration;
-                    improvedAt = iteration;
+                    improvedAt = i;
                 }
             }
         }
 
-        Debug.WriteLine($"[TABU] Completed in {iteration} iterations");
+        Debug.WriteLine($"[TABU] Completed in {i} iterations");
         return incumbent.ToSolution();
     }
 }
