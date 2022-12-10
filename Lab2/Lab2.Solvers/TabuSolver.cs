@@ -34,12 +34,14 @@ public class TabuSolver : ISolver
                 current.FirstTeam.Remove(removed);
                 current.Squad.Remove(removed);
 
+                var valueDiff = incumbent.Value - current.Value;
+
                 var bestEligible = instance.Players
                     .Except(previous.Squad)
-                    .Except(tabu)
                     .Where(current.CanAddToSquad)
                     // .Where(current.CanAddToFirstTeam) // Unnecessary if we are modifying only ONE player
                     .OrderByDescending(x => x.Points)
+                    .Where(x => !tabu.Contains(x) || x.Points > valueDiff)
                     .FirstOrDefault(x => x.Points >= removed.Points);
 
                 if (bestEligible is null)
