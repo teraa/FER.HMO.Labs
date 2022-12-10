@@ -6,13 +6,19 @@ namespace Lab2.Solvers;
 [PublicAPI]
 public class RandomSolver : ISolver
 {
+    public int? Seed { get; set; }
+
     public Solution Solve(Instance instance)
     {
+        var rnd = Seed is { } seed
+            ? new Random(seed)
+            : new Random();
+
         while (true)
         {
             var solution = new SolutionBuilder();
 
-            foreach (var player in instance.Players.OrderBy(_ => Random.Shared.NextDouble()))
+            foreach (var player in instance.Players.OrderBy(_ => rnd.NextDouble()))
             {
                 if (solution.CanAddToSquad(player, false))
                 {
