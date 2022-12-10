@@ -1,6 +1,8 @@
+using System.Collections;
+
 namespace Lab2.Solvers;
 
-public class TabuList<T>
+public class TabuList<T> : IReadOnlyCollection<T>
 {
     private readonly Queue<T> _queue;
     private int _tenure;
@@ -23,9 +25,6 @@ public class TabuList<T>
         }
     }
 
-    public bool Contains(T item)
-        => _queue.Contains(item);
-
     public bool TryAdd(T item)
     {
         if (_queue.Contains(item))
@@ -37,4 +36,12 @@ public class TabuList<T>
         _queue.Enqueue(item);
         return true;
     }
+
+    public bool Contains(T item) => _queue.Contains(item);
+
+    public IEnumerator<T> GetEnumerator() => _queue.GetEnumerator();
+
+    IEnumerator IEnumerable.GetEnumerator() => ((IEnumerable) _queue).GetEnumerator();
+
+    public int Count => _queue.Count;
 }
