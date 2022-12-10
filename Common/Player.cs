@@ -1,3 +1,4 @@
+// ReSharper disable InconsistentNaming
 namespace Common;
 
 public record Player(
