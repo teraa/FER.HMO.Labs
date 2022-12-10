@@ -24,6 +24,8 @@ public class TabuSolver : ISolver
         {
             SolutionBuilder? bestInIteration = null;
 
+            // TODO: consider substitutes to replace as well
+
             foreach (var removed in previous.FirstTeam)
             {
                 var current = previous.Clone();
@@ -53,21 +55,21 @@ public class TabuSolver : ISolver
                 }
             }
 
-            if (bestInIteration is { })
+            if (bestInIteration is null)
+                continue;
+
+            var diff = bestInIteration.Squad
+                .Except(previous.Squad)
+                .Single();
+            tabu.TryAdd(diff);
+
+            // always better than `previous` but not necessarily incumbent
+            previous = bestInIteration;
+
+            if (incumbent.Value < bestInIteration.Value)
             {
-                var diff = bestInIteration.Squad
-                    .Except(previous.Squad)
-                    .Single();
-                tabu.TryAdd(diff);
-
-                // always better than `previous` but not necessarily incumbent
-                previous = bestInIteration;
-
-                if (incumbent.Value < bestInIteration.Value)
-                {
-                    incumbent = bestInIteration;
-                    improvedAt = i;
-                }
+                incumbent = bestInIteration;
+                improvedAt = i;
             }
         }
 
