@@ -9,6 +9,7 @@ public class TabuSolver : ISolver
 {
     public ISolver InitialSolver { get; set; } = new RandomSolver();
     public int Tenure { get; set; } = 10;
+    public int TerminateAfter { get; set; } = 10;
 
     public Solution Solve(Instance instance)
     {
@@ -18,14 +19,12 @@ public class TabuSolver : ISolver
 
     private Solution TabuSearch(Solution initial, Instance instance, out int iteration)
     {
-        const int terminateAfter = 10;
-
         int improvedAt = iteration = 0;
         var previous = new SolutionBuilder(initial);
         var incumbent = previous;
         var tabu = new TabuList<Player>(Tenure);
 
-        for (iteration = 0; iteration - improvedAt < terminateAfter; iteration++)
+        for (iteration = 0; iteration - improvedAt < TerminateAfter; iteration++)
         {
             SolutionBuilder? bestInIteration = null;
 
