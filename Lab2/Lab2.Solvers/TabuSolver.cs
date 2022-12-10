@@ -36,13 +36,19 @@ public class TabuSolver : ISolver
 
                 var valueDiff = incumbent.Value - current.Value;
 
-                var bestEligible = instance.Players
+                var query = instance.Players
                     .Except(previous.Squad)
                     .Where(current.CanAddToSquad)
                     // .Where(current.CanAddToFirstTeam) // Unnecessary if we are modifying only ONE player
                     .OrderByDescending(x => x.Points)
-                    .Where(x => !tabu.Contains(x) || x.Points > valueDiff)
-                    .FirstOrDefault(x => x.Points >= removed.Points);
+                    .Where(x => x.Points >= removed.Points)
+                    .ToList();
+
+                var tabuPlayers = query.Where(tabu.Contains).ToList();
+                var aspirationPlayers = query.Where(x => x.Points > valueDiff).ToList();
+
+                var bestEligible = query
+                    .FirstOrDefault(x => !tabu.Contains(x) || x.Points > valueDiff);
 
                 if (bestEligible is null)
                     continue;
