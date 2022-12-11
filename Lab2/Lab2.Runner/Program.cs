@@ -4,9 +4,9 @@ using Lab2.Solvers;
 
 var files = new[]
 {
-    // "../../Lab1/instances/2022_instance1.csv",
-    // "../../Lab1/instances/2022_instance2.csv",
-    // "../../Lab1/instances/2022_instance3.csv",
+    "../../Lab1/instances/2022_instance1.csv",
+    "../../Lab1/instances/2022_instance2.csv",
+    "../../Lab1/instances/2022_instance3.csv",
     "../instances/Lab2_inst1.csv",
     "../instances/Lab2_inst2.csv",
 };
