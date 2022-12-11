@@ -17,27 +17,31 @@ var tabuRandomSolver = new TabuSolver {InitialSolver = randomSolver};
 var tabuGreedySolver = new TabuSolver {InitialSolver = greedySolver};
 var saRandomSolver = new SaSolver {InitialSolver = randomSolver};
 var saGreedySolver = new SaSolver {InitialSolver = greedySolver};
-var instances = files.Select(InstanceLoader.LoadFromFile);
 
-foreach (var instance in instances.Zip(files))
+var instances = files
+    .Select(InstanceLoader.LoadFromFile)
+    .ToArray();
+
+for (int i = 0; i < files.Length; i++)
 {
-    Console.WriteLine($"Instance: {instance.Second}");
+    var instance = instances[i];
+    Console.WriteLine($"Instance: {files[i]}");
 
-    var greedySolution = greedySolver.Solve(instance.First);
+    var greedySolution = greedySolver.Solve(instance);
     Console.WriteLine($"Greedy: {greedySolution.Value} ({greedySolution.Cost})");
 
-    var tabuGreedySolution = tabuGreedySolver.Solve(instance.First);
+    var tabuGreedySolution = tabuGreedySolver.Solve(instance);
     Console.WriteLine($"Tabu+Greedy: {tabuGreedySolution.Value} ({tabuGreedySolution.Cost})");
 
-    var tabuRandomSolution = tabuRandomSolver.Solve(instance.First);
+    var tabuRandomSolution = tabuRandomSolver.Solve(instance);
     Console.WriteLine($"Tabu+Random: {tabuRandomSolution.Value} ({tabuRandomSolution.Cost})");
 
-    var graspSolution = graspSolver.Solve(instance.First);
+    var graspSolution = graspSolver.Solve(instance);
     Console.WriteLine($"Grasp: {graspSolution.Value} ({graspSolution.Cost})");
 
-    var saGreedySolution = saGreedySolver.Solve(instance.First);
+    var saGreedySolution = saGreedySolver.Solve(instance);
     Console.WriteLine($"Sa+Greedy: {saGreedySolution.Value} ({saGreedySolution.Cost})");
 
-    var saRandomSolution = saRandomSolver.Solve(instance.First);
+    var saRandomSolution = saRandomSolver.Solve(instance);
     Console.WriteLine($"Sa+Random: {saRandomSolution.Value} ({saRandomSolution.Cost})");
 }
