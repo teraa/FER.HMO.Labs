@@ -1,10 +1,13 @@
+using System.Diagnostics;
+
 namespace Common;
 
 public class Formation
 {
-    private const int FormationLength = 4;
-
-    private readonly int[] _formation;
+    public int Gk { get; private set; }
+    public int Def { get; private set; }
+    public int Mid { get; private set; }
+    public int Fw { get; private set; }
 
     static Formation()
     {
@@ -18,26 +21,21 @@ public class Formation
             if (gk + def + mid + fw != Constants.FirstTeamCount)
                 continue;
 
-            formations.Add(new Formation(new[] {gk, def, mid, fw}));
+            formations.Add(new Formation(gk, def, mid, fw));
         }
 
         ValidFormations = formations;
     }
 
-    public Formation(int[] formation)
-    {
-        if (formation is null)
-            throw new ArgumentNullException(nameof(formation));
-        if (formation.Length != FormationLength)
-            throw new ArgumentOutOfRangeException(nameof(formation));
-
-        _formation = formation;
-    }
-
     public Formation(int gk, int def, int mid, int fw)
     {
-        _formation = new[] {gk, def, mid, fw};
+        Gk = gk;
+        Def = def;
+        Mid = mid;
+        Fw = fw;
     }
+
+    private Formation() { }
 
     public static IReadOnlyList<Formation> ValidFormations { get; }
 
@@ -47,29 +45,26 @@ public class Formation
         mid: Constants.SquadMidCount,
         fw: Constants.SquadFwCount);
 
-    public int this[Position position]
+    public int this[Position position] => position switch
     {
-        get => _formation[(int) position];
-        private set => _formation[(int) position] = value;
-    }
-
-    public IReadOnlyList<int> Values
-        => _formation;
+        Position.GK => Gk,
+        Position.DEF => Def,
+        Position.MID => Mid,
+        Position.FW => Fw,
+        _ => throw new UnreachableException()
+    };
 
     public override string ToString()
-        => string.Join(',', _formation);
+        => $"{Gk},{Def},{Mid},{Fw}";
 
     public bool IsIncompleteValid()
     {
         foreach (var formation in ValidFormations)
         {
-            bool valid = true;
-
-            for (int i = 0; i < FormationLength && valid; i++)
-                if (Values[i] > formation.Values[i])
-                    valid = false;
-
-            if (valid)
+            if (Gk <= formation.Gk &&
+                Def <= formation.Def &&
+                Mid <= formation.Mid &&
+                Fw <= formation.Fw)
                 return true;
         }
 
@@ -78,26 +73,33 @@ public class Formation
 
     public bool IsIncompleteSquad()
     {
-        for (int i = 0; i < FormationLength; i++)
-            if (Values[i] > SquadFormation.Values[i])
-                return false;
-
-        return true;
+        return
+            Gk <= Constants.SquadGkCount &&
+            Def <= Constants.SquadDefCount &&
+            Mid <= Constants.SquadMidCount &&
+            Fw <= Constants.SquadFwCount;
     }
 
-    public static Formation FromPlayers(IEnumerable<Player> players)
+    private void AddPlayer(Player player)
     {
-        var formation = new Formation(0, 0, 0, 0);
-        foreach (var player in players)
-            formation[player.Position]++;
-
-        return formation;
+        switch (player.Position)
+        {
+            case Position.GK: Gk++; break;
+            case Position.DEF: Def++; break;
+            case Position.MID: Mid++; break;
+            case Position.FW: Fw++; break;
+            default: throw new UnreachableException();
+        }
     }
 
-    public static Formation FromPlayers(IEnumerable<Player> players, Player player)
+    public static Formation FromPlayers(IReadOnlyList<Player> players, Player newPlayer)
     {
-        var formation = FromPlayers(players);
-        formation[player.Position]++;
+        var formation = new Formation();
+
+        for (var i = 0; i < players.Count; i++)
+            formation.AddPlayer(players[i]);
+
+        formation.AddPlayer(newPlayer);
         return formation;
     }
 }
