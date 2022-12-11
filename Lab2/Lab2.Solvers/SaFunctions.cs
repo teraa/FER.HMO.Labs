@@ -1,20 +1,24 @@
 namespace Lab2.Solvers;
 
+/// <param name="delta">Negative if improving.</param>
+public delegate double ProbabilityFunction(double temperature, double delta);
+
+public delegate double DecrementFunction(double temperature, int iteration);
+
 public static class SaFunctions
 {
-    public static double DefaultDecrement(double temperature, int iteration)
-        => temperature * 0.5;
+    public static double VerySlowDecrement(double temperature, int iteration)
+        => temperature / (1 + 0.2 * temperature);
+
+    public static double LinearDecrement(double temperature, int iteration)
+        => temperature * 0.95;
 
     /// <summary>
     /// Accept if improving else accept with certain probability.
     /// </summary>
-    public static double DefaultProbability(double temperature, double currentValue, double newValue)
+    /// <inheritdoc cref="ProbabilityFunction"/>
+    public static double DefaultProbability(double temperature, double delta)
     {
-        // minimization
-        // < 0 better
-        // = 0 equal
-        // > 0 worse
-        var delta = newValue - currentValue;
         if (delta <= 0)
             return 1;
 
@@ -26,10 +30,9 @@ public static class SaFunctions
     /// <summary>
     /// Accept with a certain probability.
     /// </summary>
-    public static double AlternativeProbability(double temperature, double currentValue, double newValue)
+    /// <inheritdoc cref="ProbabilityFunction"/>
+    public static double AlternativeProbability(double temperature, double delta)
     {
-        // minimization
-        var delta = newValue - currentValue;
         var exponent = delta / temperature;
         var e = Math.Exp(exponent);
         var p = 1 / (1 + e);
