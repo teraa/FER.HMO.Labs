@@ -8,8 +8,8 @@ namespace Lab2.Solvers;
 public class TabuSolver : ISolver
 {
     public ISolver InitialSolver { get; set; } = new RandomSolver();
-    public int Tenure { get; set; } = 10;
-    public int TerminateAfter { get; set; } = 10;
+    public int Tenure { get; set; } = 5000;
+    public int TerminateAfter { get; set; } = 100;
 
     public Solution Solve(Instance instance)
     {
@@ -24,6 +24,7 @@ public class TabuSolver : ISolver
         {
             SolutionBuilder? bestInIteration = null;
 
+            int n = 0;
             var substitutes = previous.Squad.Except(previous.FirstTeam);
             foreach (var removedSubstitute in substitutes)
             {
@@ -39,28 +40,33 @@ public class TabuSolver : ISolver
                     var bestEligible = instance.Players
                         .Where(current.CanAddToSquad)
                         .Where(current.CanAddToFirstTeam)
-                        .OrderByDescending(x => x.Points)
                         .Except(previous.Squad)
-                        .Where(x => !tabu.Contains(x) || x.Points > valueDiff)
-                        .FirstOrDefault(x => x.Points >= removedFirstTeam.Points);
+                        .OrderByDescending(x => x.Points)
+                        .FirstOrDefault(x => !tabu.Contains(x) || x.Points > valueDiff);
 
                     if (bestEligible is null)
                         continue;
+
+                    if (tabu.Contains(bestEligible))
+                        Debug.WriteLine("[TABU] picked tabu");
+
+                    if (bestEligible.Points > valueDiff)
+                        Debug.WriteLine($"[TABU] aspiration: {bestEligible.Points - valueDiff}");
 
                     current.FirstTeam.Add(bestEligible);
                     current.Squad.Add(bestEligible);
 
                     var cheapestSubstitute = instance.Players
                         .Where(current.CanAddToSquad)
-                        .OrderBy(x => x.Price)
                         .Except(previous.Squad)
                         .Except(tabu)
-                        .FirstOrDefault();
+                        .MinBy(x => x.Price);
 
                     if (cheapestSubstitute is null)
                         continue;
 
                     current.Squad.Add(cheapestSubstitute);
+                    n++;
 
                     if (bestInIteration is null ||
                         bestInIteration.Value < current.Value)
@@ -69,6 +75,8 @@ public class TabuSolver : ISolver
                     }
                 }
             }
+
+            Debug.WriteLine($"[TABU] {n} neighbors considered");
 
             if (bestInIteration is null)
                 continue;
