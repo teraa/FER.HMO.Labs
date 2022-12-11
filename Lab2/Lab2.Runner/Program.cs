@@ -4,17 +4,20 @@ using Lab2.Solvers;
 
 var files = new[]
 {
-    "../../Lab1/instances/2022_instance1.csv",
-    "../../Lab1/instances/2022_instance2.csv",
-    "../../Lab1/instances/2022_instance3.csv",
+    // "../../Lab1/instances/2022_instance1.csv",
+    // "../../Lab1/instances/2022_instance2.csv",
+    // "../../Lab1/instances/2022_instance3.csv",
     "../instances/Lab2_inst1.csv",
     "../instances/Lab2_inst2.csv",
 };
-var tabuRandomSolver = new TabuSolver() {InitialSolver = new RandomSolver() {Seed = 100}};
-var tabuGreedySolver = new TabuSolver() {InitialSolver = new GreedySolver()};
 var greedySolver = new GreedySolver();
 var graspSolver = new GraspSolver();
-var instances = files.Select(x => InstanceLoader.LoadFromFile(x));
+var randomSolver = new RandomSolver {Seed = null};
+var tabuRandomSolver = new TabuSolver {InitialSolver = randomSolver};
+var tabuGreedySolver = new TabuSolver {InitialSolver = greedySolver};
+var saRandomSolver = new SaSolver {InitialSolver = randomSolver};
+var saGreedySolver = new SaSolver {InitialSolver = greedySolver};
+var instances = files.Select(InstanceLoader.LoadFromFile);
 
 foreach (var instance in instances.Zip(files))
 {
@@ -31,15 +34,10 @@ foreach (var instance in instances.Zip(files))
 
     var graspSolution = graspSolver.Solve(instance.First);
     Console.WriteLine($"Grasp: {graspSolution.Value} ({graspSolution.Cost})");
+
+    var saGreedySolution = saGreedySolver.Solve(instance.First);
+    Console.WriteLine($"Sa+Greedy: {saGreedySolution.Value} ({saGreedySolution.Cost})");
+
+    var saRandomSolution = saRandomSolver.Solve(instance.First);
+    Console.WriteLine($"Sa+Random: {saRandomSolution.Value} ({saRandomSolution.Cost})");
 }
-
-
-//
-// foreach (var position in Enum.GetValues<Position>())
-// {
-//     var selection = Formation.ValidFormations.Select(x => x[position]).ToArray();
-//     var min = selection.Min();
-//     var max = selection.Max();
-//
-//     Console.WriteLine($"{position}: {min},{max}");
-// }
