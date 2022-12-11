@@ -58,9 +58,6 @@ public class TabuSolver : ISolver
                     if (tabu.Contains(bestEligible))
                         Debug.WriteLine("[TABU] picked tabu");
 
-                    if (bestEligible.Points > aspiration)
-                        Debug.WriteLine($"[TABU] aspiration: {bestEligible.Points - aspiration}");
-
                     n++;
 
                     if (bestInIteration is null ||
