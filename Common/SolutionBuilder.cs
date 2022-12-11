@@ -25,7 +25,9 @@ public class SolutionBuilder
 
     public bool CanAddToSquad(Player player, bool averagePriceCheck)
     {
-        var cost = Cost + player.Price;
+        var cost = player.Price;
+        foreach (var p in Squad)
+            cost += p.Price;
 
         if (averagePriceCheck)
         {
@@ -38,7 +40,12 @@ public class SolutionBuilder
                 return false;
         }
 
-        if (Squad.Count(x => x.Club == player.Club) + 1 > Constants.MaxPlayersPerClub)
+        var clubPlayers = 1;
+        foreach (var p in Squad)
+            if (p.Club == player.Club)
+                clubPlayers++;
+
+        if (clubPlayers > Constants.MaxPlayersPerClub)
             return false;
 
         var formation = Formation.FromPlayers(Squad, player);
