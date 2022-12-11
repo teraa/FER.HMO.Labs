@@ -2,6 +2,8 @@ namespace Common;
 
 public class Formation
 {
+    private const int FormationLength = 4;
+
     private readonly int[] _formation;
 
     static Formation()
@@ -26,7 +28,7 @@ public class Formation
     {
         if (formation is null)
             throw new ArgumentNullException(nameof(formation));
-        if (formation.Length != 4)
+        if (formation.Length != FormationLength)
             throw new ArgumentOutOfRangeException(nameof(formation));
 
         _formation = formation;
@@ -64,5 +66,30 @@ public class Formation
             formation[player.Position]++;
 
         return formation;
+    }
+
+    public static Formation FromPlayers(IEnumerable<Player> players, Player player)
+    {
+        var formation = FromPlayers(players);
+        formation[player.Position]++;
+        return formation;
+    }
+
+    public static bool operator <=(Formation left, Formation right)
+    {
+        for (int i = 0; i < FormationLength; i++)
+            if (left.Values[i] > right.Values[i])
+                return false;
+
+        return true;
+    }
+
+    public static bool operator >=(Formation left, Formation right)
+    {
+        for (int i = 0; i < FormationLength; i++)
+            if (left.Values[i] < right.Values[i])
+                return false;
+
+        return true;
     }
 }

@@ -25,34 +25,30 @@ public class SolutionBuilder
 
     public bool CanAddToSquad(Player player, bool averagePriceCheck)
     {
-        var squad = Squad.Concat(new[] {player}).ToList();
+        var cost = Cost + player.Price;
 
         if (averagePriceCheck)
         {
-            if (squad.Average(x => x.Price) * Constants.SquadCount > Constants.MaxSquadCost)
+            if (cost / (Squad.Count + 1) > Constants.MaxSquadCost / Constants.SquadCount)
                 return false;
         }
         else
         {
-            if (squad.Sum(x => x.Price) > Constants.MaxSquadCost)
+            if (cost > Constants.MaxSquadCost)
                 return false;
         }
 
-        if (squad.Count(x => x.Club == player.Club) > Constants.MaxPlayersPerClub)
+        if (Squad.Count(x => x.Club == player.Club) + 1 > Constants.MaxPlayersPerClub)
             return false;
 
-        var formation = Formation.FromPlayers(squad);
-
-        return formation.Values.Zip(Formation.SquadFormation.Values).All(x => x.First <= x.Second);
+        var formation = Formation.FromPlayers(Squad, player);
+        return Formation.SquadFormation >= formation;
     }
 
     public bool CanAddToFirstTeam(Player player)
     {
-        var firstTeam = FirstTeam.Concat(new[] {player});
-        var formation = Formation.FromPlayers(firstTeam);
-
-        return Formation.ValidFormations.Any(validFormation =>
-            formation.Values.Zip(validFormation.Values).All(x => x.First <= x.Second));
+        var formation = Formation.FromPlayers(FirstTeam, player);
+        return Formation.ValidFormations.Any(x => x >= formation);
     }
 
     public Solution ToSolution()
