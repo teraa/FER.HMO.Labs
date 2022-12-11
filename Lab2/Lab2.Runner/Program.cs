@@ -11,37 +11,28 @@ var files = new[]
     "../instances/Lab2_inst2.csv",
 };
 var greedySolver = new GreedySolver();
-var graspSolver = new GraspSolver();
 var randomSolver = new RandomSolver {Seed = null};
-var tabuRandomSolver = new TabuSolver {InitialSolver = randomSolver};
-var tabuGreedySolver = new TabuSolver {InitialSolver = greedySolver};
-var saRandomSolver = new SaSolver {InitialSolver = randomSolver};
-var saGreedySolver = new SaSolver {InitialSolver = greedySolver};
 
-var instances = files
-    .Select(InstanceLoader.LoadFromFile)
-    .ToArray();
-
-for (int i = 0; i < files.Length; i++)
+var solvers = new SolverInfo[]
 {
-    var instance = instances[i];
-    Console.WriteLine($"Instance: {files[i]}");
+    new("Greedy", greedySolver),
+    new("Tabu+Random", new TabuSolver {InitialSolver = randomSolver}),
+    new("Tabu+Greedy", new TabuSolver {InitialSolver = greedySolver}),
+    new("Grasp", new GraspSolver()),
+    new("Sa+Random", new SaSolver {InitialSolver = randomSolver}),
+    new("Sa+Greedy", new SaSolver {InitialSolver = greedySolver}),
+};
 
-    var greedySolution = greedySolver.Solve(instance);
-    Console.WriteLine($"Greedy: {greedySolution.Value} ({greedySolution.Cost})");
+foreach (var file in files)
+{
+    var instance = InstanceLoader.LoadFromFile(file);
+    Console.WriteLine($"Instance: {file}");
 
-    var tabuGreedySolution = tabuGreedySolver.Solve(instance);
-    Console.WriteLine($"Tabu+Greedy: {tabuGreedySolution.Value} ({tabuGreedySolution.Cost})");
-
-    var tabuRandomSolution = tabuRandomSolver.Solve(instance);
-    Console.WriteLine($"Tabu+Random: {tabuRandomSolution.Value} ({tabuRandomSolution.Cost})");
-
-    var graspSolution = graspSolver.Solve(instance);
-    Console.WriteLine($"Grasp: {graspSolution.Value} ({graspSolution.Cost})");
-
-    var saGreedySolution = saGreedySolver.Solve(instance);
-    Console.WriteLine($"Sa+Greedy: {saGreedySolution.Value} ({saGreedySolution.Cost})");
-
-    var saRandomSolution = saRandomSolver.Solve(instance);
-    Console.WriteLine($"Sa+Random: {saRandomSolution.Value} ({saRandomSolution.Cost})");
+    foreach (var solverInfo in solvers)
+    {
+        var solution = solverInfo.Solver.Solve(instance);
+        Console.WriteLine($"{solverInfo.Name}: {solution.Value} ({solution.Cost})");
+    }
 }
+
+file record SolverInfo(string Name, ISolver Solver);
