@@ -8,8 +8,8 @@ namespace Lab2.Solvers;
 public class TabuSolver : ISolver
 {
     public ISolver InitialSolver { get; set; } = new RandomSolver();
-    public int Tenure { get; set; } = 5000;
-    public int TerminateAfter { get; set; } = 100;
+    public int Tenure { get; set; } = 10;
+    public int TerminateAfter { get; set; } = 10;
 
     public Solution Solve(Instance instance)
     {
@@ -34,17 +34,26 @@ public class TabuSolver : ISolver
                     current.FirstTeam.Remove(removedFirstTeam);
                     current.Squad.Remove(removedFirstTeam);
 
-                    var aspiration = incumbent.Value - current.Value;
+                    var cheapestSubstitute = instance.Players
+                        .Where(x => current.CanAddToSquad(x, false))
+                        .Except(previous.Squad)
+                        .Except(tabu)
+                        .MinBy(x => x.Price);
 
+                    if (cheapestSubstitute is null) continue;
+                    current.Squad.Add(cheapestSubstitute);
+
+                    var aspiration = incumbent.Value - current.Value;
                     var bestEligible = instance.Players
-                        .Where(current.CanAddToSquad)
+                        .Where(x => current.CanAddToSquad(x, false))
                         .Where(current.CanAddToFirstTeam)
                         .Except(previous.Squad)
                         .OrderByDescending(x => x.Points)
                         .FirstOrDefault(x => !tabu.Contains(x) || x.Points > aspiration);
 
-                    if (bestEligible is null)
-                        continue;
+                    if (bestEligible is null) continue;
+                    current.FirstTeam.Add(bestEligible);
+                    current.Squad.Add(bestEligible);
 
                     if (tabu.Contains(bestEligible))
                         Debug.WriteLine("[TABU] picked tabu");
@@ -52,19 +61,6 @@ public class TabuSolver : ISolver
                     if (bestEligible.Points > aspiration)
                         Debug.WriteLine($"[TABU] aspiration: {bestEligible.Points - aspiration}");
 
-                    current.FirstTeam.Add(bestEligible);
-                    current.Squad.Add(bestEligible);
-
-                    var cheapestSubstitute = instance.Players
-                        .Where(current.CanAddToSquad)
-                        .Except(previous.Squad)
-                        .Except(tabu)
-                        .MinBy(x => x.Price);
-
-                    if (cheapestSubstitute is null)
-                        continue;
-
-                    current.Squad.Add(cheapestSubstitute);
                     n++;
 
                     if (bestInIteration is null ||
