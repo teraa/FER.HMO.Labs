@@ -34,14 +34,14 @@ public class TabuSolver : ISolver
                     current.FirstTeam.Remove(removedFirstTeam);
                     current.Squad.Remove(removedFirstTeam);
 
-                    var valueDiff = incumbent.Value - current.Value;
+                    var aspiration = incumbent.Value - current.Value;
 
                     var bestEligible = instance.Players
                         .Where(current.CanAddToSquad)
                         .Where(current.CanAddToFirstTeam)
                         .Except(previous.Squad)
                         .OrderByDescending(x => x.Points)
-                        .FirstOrDefault(x => !tabu.Contains(x) || x.Points > valueDiff);
+                        .FirstOrDefault(x => !tabu.Contains(x) || x.Points > aspiration);
 
                     if (bestEligible is null)
                         continue;
@@ -49,8 +49,8 @@ public class TabuSolver : ISolver
                     if (tabu.Contains(bestEligible))
                         Debug.WriteLine("[TABU] picked tabu");
 
-                    if (bestEligible.Points > valueDiff)
-                        Debug.WriteLine($"[TABU] aspiration: {bestEligible.Points - valueDiff}");
+                    if (bestEligible.Points > aspiration)
+                        Debug.WriteLine($"[TABU] aspiration: {bestEligible.Points - aspiration}");
 
                     current.FirstTeam.Add(bestEligible);
                     current.Squad.Add(bestEligible);
