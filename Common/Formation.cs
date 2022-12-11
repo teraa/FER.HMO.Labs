@@ -59,6 +59,32 @@ public class Formation
     public override string ToString()
         => string.Join(',', _formation);
 
+    public bool IsIncompleteValid()
+    {
+        foreach (var formation in ValidFormations)
+        {
+            bool valid = true;
+
+            for (int i = 0; i < FormationLength && valid; i++)
+                if (Values[i] > formation.Values[i])
+                    valid = false;
+
+            if (valid)
+                return true;
+        }
+
+        return false;
+    }
+
+    public bool IsIncompleteSquad()
+    {
+        for (int i = 0; i < FormationLength; i++)
+            if (Values[i] > SquadFormation.Values[i])
+                return false;
+
+        return true;
+    }
+
     public static Formation FromPlayers(IEnumerable<Player> players)
     {
         var formation = new Formation(0, 0, 0, 0);
@@ -73,23 +99,5 @@ public class Formation
         var formation = FromPlayers(players);
         formation[player.Position]++;
         return formation;
-    }
-
-    public static bool operator <=(Formation left, Formation right)
-    {
-        for (int i = 0; i < FormationLength; i++)
-            if (left.Values[i] > right.Values[i])
-                return false;
-
-        return true;
-    }
-
-    public static bool operator >=(Formation left, Formation right)
-    {
-        for (int i = 0; i < FormationLength; i++)
-            if (left.Values[i] < right.Values[i])
-                return false;
-
-        return true;
     }
 }

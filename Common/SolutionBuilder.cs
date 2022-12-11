@@ -42,13 +42,13 @@ public class SolutionBuilder
             return false;
 
         var formation = Formation.FromPlayers(Squad, player);
-        return Formation.SquadFormation >= formation;
+        return formation.IsIncompleteSquad();
     }
 
     public bool CanAddToFirstTeam(Player player)
     {
         var formation = Formation.FromPlayers(FirstTeam, player);
-        return Formation.ValidFormations.Any(x => x >= formation);
+        return formation.IsIncompleteValid();
     }
 
     public Solution ToSolution()
