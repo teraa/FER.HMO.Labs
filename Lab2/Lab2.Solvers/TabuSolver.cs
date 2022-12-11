@@ -24,34 +24,49 @@ public class TabuSolver : ISolver
         {
             SolutionBuilder? bestInIteration = null;
 
-            // TODO: consider substitutes to replace as well
-
-            foreach (var removed in previous.FirstTeam)
+            var substitutes = previous.Squad.Except(previous.FirstTeam);
+            foreach (var removedSubstitute in substitutes)
             {
-                var current = previous.Clone();
-                current.FirstTeam.Remove(removed);
-                current.Squad.Remove(removed);
-
-                var valueDiff = incumbent.Value - current.Value;
-
-                var bestEligible = instance.Players
-                    .Except(previous.Squad)
-                    .Where(current.CanAddToSquad)
-                    // .Where(current.CanAddToFirstTeam) // Unnecessary if we are modifying only ONE player
-                    .OrderByDescending(x => x.Points)
-                    .Where(x => !tabu.Contains(x) || x.Points > valueDiff)
-                    .FirstOrDefault(x => x.Points >= removed.Points);
-
-                if (bestEligible is null)
-                    continue;
-
-                current.FirstTeam.Add(bestEligible);
-                current.Squad.Add(bestEligible);
-
-                if (bestInIteration is null ||
-                    bestInIteration.Value < current.Value)
+                foreach (var removedFirstTeam in previous.FirstTeam)
                 {
-                    bestInIteration = current;
+                    var current = previous.Clone();
+                    current.Squad.Remove(removedSubstitute);
+                    current.FirstTeam.Remove(removedFirstTeam);
+                    current.Squad.Remove(removedFirstTeam);
+
+                    var valueDiff = incumbent.Value - current.Value;
+
+                    var bestEligible = instance.Players
+                        .Where(current.CanAddToSquad)
+                        .Where(current.CanAddToFirstTeam)
+                        .OrderByDescending(x => x.Points)
+                        .Except(previous.Squad)
+                        .Where(x => !tabu.Contains(x) || x.Points > valueDiff)
+                        .FirstOrDefault(x => x.Points >= removedFirstTeam.Points);
+
+                    if (bestEligible is null)
+                        continue;
+
+                    current.FirstTeam.Add(bestEligible);
+                    current.Squad.Add(bestEligible);
+
+                    var cheapestSubstitute = instance.Players
+                        .Where(current.CanAddToSquad)
+                        .OrderBy(x => x.Price)
+                        .Except(previous.Squad)
+                        .Except(tabu)
+                        .FirstOrDefault();
+
+                    if (cheapestSubstitute is null)
+                        continue;
+
+                    current.Squad.Add(cheapestSubstitute);
+
+                    if (bestInIteration is null ||
+                        bestInIteration.Value < current.Value)
+                    {
+                        bestInIteration = current;
+                    }
                 }
             }
 
@@ -60,8 +75,11 @@ public class TabuSolver : ISolver
 
             var diff = bestInIteration.Squad
                 .Except(previous.Squad)
-                .Single();
-            tabu.TryAdd(diff);
+                .ToList();
+            Debug.Assert(diff.Count == 2);
+
+            foreach (var player in diff)
+                tabu.TryAdd(player);
 
             // always better than `previous` but not necessarily incumbent
             previous = bestInIteration;
