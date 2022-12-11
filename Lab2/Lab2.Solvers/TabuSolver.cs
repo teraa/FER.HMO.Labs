@@ -25,8 +25,7 @@ public class TabuSolver : ISolver
             SolutionBuilder? bestInIteration = null;
 
             int n = 0;
-            var substitutes = previous.Squad.Except(previous.FirstTeam);
-            foreach (var removedSubstitute in substitutes)
+            foreach (var removedSubstitute in previous.Substitutes)
             {
                 foreach (var removedFirstTeam in previous.FirstTeam)
                 {

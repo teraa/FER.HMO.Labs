@@ -16,6 +16,7 @@ public class SolutionBuilder
 
     public List<Player> Squad { get; }
     public List<Player> FirstTeam { get; }
+    public IEnumerable<Player> Substitutes => Squad.Except(FirstTeam);
 
     public int Value => FirstTeam.Sum(x => x.Points);
     public decimal Cost => Squad.Sum(x => x.Price);
