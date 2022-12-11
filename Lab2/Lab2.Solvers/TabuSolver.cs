@@ -75,11 +75,10 @@ public class TabuSolver : ISolver
 
             var diff = bestInIteration.Squad
                 .Except(previous.Squad)
-                .ToList();
-            Debug.Assert(diff.Count == 2);
+                .MaxBy(x => x.Points);
 
-            foreach (var player in diff)
-                tabu.TryAdd(player);
+            Debug.Assert(diff is not null);
+            tabu.TryAdd(diff);
 
             // always better than `previous` but not necessarily incumbent
             previous = bestInIteration;
