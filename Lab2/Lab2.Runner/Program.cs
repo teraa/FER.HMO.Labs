@@ -18,10 +18,10 @@ var solvers = new SolverInfo[]
 {
     new("Random", randomSolver),
     new("Sa+Random", new SaSolver {InitialSolver = randomSolver}),
-    // new("Tabu+Random", new TabuSolver {InitialSolver = randomSolver}),
+    new("Tabu+Random", new TabuSolver {InitialSolver = randomSolver}),
     new("Greedy", greedySolver),
     new("Sa+Greedy", new SaSolver {InitialSolver = greedySolver}),
-    // new("Tabu+Greedy", new TabuSolver {InitialSolver = greedySolver}),
+    new("Tabu+Greedy", new TabuSolver {InitialSolver = greedySolver}),
     new("Grasp", new GraspSolver()),
 };
 
@@ -37,7 +37,10 @@ foreach (var file in files)
         var solution = solverInfo.Solver.Solve(instance);
         sw.Stop();
 
-        Console.WriteLine($"[{sw.ElapsedMilliseconds,5}ms] {solverInfo.Name,15}: {solution.Value,4} ({solution.Cost,5})");
+        Console.WriteLine(
+            $"[{sw.ElapsedMilliseconds,5}ms] {solverInfo.Name,15}: {solution.Value,4} ({solution.Cost,5})"
+            + " " + string.Join(",", solution.FirstTeam.Select(x => x.Id))
+            + "|" + string.Join(",", solution.Substitutes.Select(x => x.Id)));
     }
 }
 
