@@ -8,8 +8,8 @@ namespace Lab2.Solvers;
 public class TabuSolver : ISolver
 {
     public ISolver InitialSolver { get; set; } = new RandomSolver();
-    public int Tenure { get; set; } = 10;
-    public int TerminateAfter { get; set; } = 10;
+    public int Tenure { get; set; } = 2;
+    public int TerminateAfter { get; set; } = 20;
 
     public Solution Solve(Instance instance)
     {
