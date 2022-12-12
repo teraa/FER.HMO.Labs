@@ -9,7 +9,7 @@ namespace Lab2.Solvers;
 public class SaSolver : ISolver
 {
     public ISolver InitialSolver { get; set; } = new GreedySolver();
-    public double InitialTemperature { get; set; } = 100;
+    public double InitialTemperature { get; set; } = 4;
     public double FinalTemperature { get; set; } = 0.01;
     public DecrementFunction Decrement { get; set; } = SaFunctions.VerySlowDecrement;
     public ProbabilityFunction Probability { get; set; } = SaFunctions.DefaultProbability;
