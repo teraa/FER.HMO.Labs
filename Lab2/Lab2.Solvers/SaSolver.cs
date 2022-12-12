@@ -83,7 +83,7 @@ public class SaSolver : ISolver
         }
 
         Debug.WriteLine($"[SA] completed after {i} iterations");
-        Debug.Assert(initial.Value <= incumbent.Value);
+        // Debug.Assert(initial.Value <= incumbent.Value);
         return incumbent.ToSolution();
     }
 }
