@@ -16,13 +16,13 @@ var randomSolver = new RandomSolver {Seed = null};
 
 var solvers = new SolverInfo[]
 {
-    new("Random", randomSolver),
+    // new("Random", randomSolver),
     new("Sa+Random", new SaSolver {InitialSolver = randomSolver}),
     new("Tabu+Random", new TabuSolver {InitialSolver = randomSolver}),
-    new("Greedy", greedySolver),
+    // new("Greedy", greedySolver),
     new("Sa+Greedy", new SaSolver {InitialSolver = greedySolver}),
     new("Tabu+Greedy", new TabuSolver {InitialSolver = greedySolver}),
-    new("Grasp", new GraspSolver()),
+    // new("Grasp", new GraspSolver()),
 };
 
 foreach (var file in files)
@@ -33,14 +33,28 @@ foreach (var file in files)
     var sw = new Stopwatch();
     foreach (var solverInfo in solvers)
     {
-        sw.Restart();
-        var solution = solverInfo.Solver.Solve(instance);
-        sw.Stop();
+        Solution? bestSolution = null;
+
+        for (int i = 0; i < 20; i++)
+        {
+            sw.Restart();
+            var solution = solverInfo.Solver.Solve(instance);
+            sw.Stop();
+
+            if (bestSolution is null || solution.Value > bestSolution.Value)
+                bestSolution = solution;
+
+            Console.Write(".");
+        }
+
+        Console.WriteLine();
+
+        Debug.Assert(bestSolution is { });
 
         Console.WriteLine(
-            $"[{sw.ElapsedMilliseconds,5}ms] {solverInfo.Name,15}: {solution.Value,4} ({solution.Cost,5})"
-            + " " + string.Join(",", solution.FirstTeam.Select(x => x.Id))
-            + "|" + string.Join(",", solution.Substitutes.Select(x => x.Id)));
+            $"[{sw.ElapsedMilliseconds,5}ms] {solverInfo.Name,15}: {bestSolution.Value,4} ({bestSolution.Cost,5})"
+            + " " + string.Join(",", bestSolution.FirstTeam.Select(x => x.Id))
+            + "|" + string.Join(",", bestSolution.Substitutes.Select(x => x.Id)));
     }
 }
 
