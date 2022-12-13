@@ -1,8 +1,17 @@
+using System.Reflection;
+
 namespace Common.Tests;
 
-public abstract class SolutionTests
+public abstract class SolverTests<TSolver> where TSolver : ISolver, new()
 {
-    protected Solution Solution { get; init; } = null!;
+    protected SolverTests()
+    {
+        var file = GetType().GetCustomAttribute<TestInstanceAttribute>()?.FileName ??
+                   throw new InvalidOperationException();
+        Solution = TestSolutions.Get<TSolver>(file);
+    }
+
+    private Solution Solution { get; }
 
     [Fact]
     public void Squad_PlayerCount()
@@ -73,5 +82,4 @@ public abstract class SolutionTests
         => Solution.FirstTeam.Where(x => x.Position == Position.FW)
             .Should().HaveCountGreaterThanOrEqualTo(Constants.FirstTeamMinFwCount)
             .And.HaveCountLessThanOrEqualTo(Constants.SquadFwCount);
-
 }
